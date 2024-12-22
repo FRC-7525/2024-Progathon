@@ -16,7 +16,7 @@ public class IndexerIOSim implements IndexerIO {
     private double wheelSpeedpoint;
 
     public IndexerIOSim() {
-        wheelMotorSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX60(1), 0.000001, 1), DCMotor.getKrakenX60Foc(Constants.NUM_SPINNER_MOTORS), 0);
+        wheelMotorSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX60(1), 0.000001, 1), DCMotor.getKrakenX60Foc(IndexerConstants.NUM_SPINNER_MOTORS), 0);
 
         speedController = new PIDController(0, 0, 0);
     }
