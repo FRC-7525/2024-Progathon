@@ -4,6 +4,7 @@ import com.pathplanner.lib.config.PIDConstants;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 
 public class IndexerIOSim implements IndexerIO {
@@ -15,11 +16,7 @@ public class IndexerIOSim implements IndexerIO {
     private double wheelSpeedpoint;
 
     public IndexerIOSim() {
-        wheelMotorSim = new DCMotorSim(
-            DCMotor.getKrakenX60Foc(Constants.NUM_SPINNER_MOTORS),
-            Constants.SPINNER_GEARING,
-            Constants.SPINNER_MOI
-        );
+        wheelMotorSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX60(1), 0.000001, 1), DCMotor.getKrakenX60Foc(Constants.NUM_SPINNER_MOTORS), 0);
 
         speedController = new PIDController(0, 0, 0);
     }
