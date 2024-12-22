@@ -15,6 +15,8 @@ public class IndexerIOSim implements IndexerIO {
     private double wheelAppliedVoltage;
     private double wheelSpeedpoint;
 
+    private boolean[] beamBreakArray = {false, false, false, false, false, false};
+
     public IndexerIOSim() {
         wheelMotorSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX60(1), 0.000001, 1), DCMotor.getKrakenX60Foc(IndexerConstants.NUM_SPINNER_MOTORS), 0);
 
@@ -33,8 +35,9 @@ public class IndexerIOSim implements IndexerIO {
     public void updateInputs(IndexerIOInputs inputs) {
         inputs.wheelSpeed = wheelMotorSim.getAngularVelocityRPM() / 60.0;
         inputs.wheelSetpoint = wheelSpeedpoint;
-
-        wheelMotorSim.update(Constants.SIM_UPDATE_TIME);
+        inputs.beamBreakArray = beamBreakArray;
+        
+        wheelMotorSim.update(IndexerConstants.SIM_UPDATE_TIME);
     }
 
     @Override
@@ -51,5 +54,9 @@ public class IndexerIOSim implements IndexerIO {
     @Override
     public void configurePID(PIDConstants constants) {
         speedController = new PIDController(constants.kP, constants.kI, constants.kD);
+    }
+
+    public boolean[] getBeamBreakArray() {
+        return beamBreakArray;
     }
 }
