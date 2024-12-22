@@ -1,6 +1,6 @@
 package frc.robot.subsystems.Indexer;
 
-public final class Constants {
+public final class IndexerConstants {
     public static final int SPINNER_ID = 1;
 
     public static final int[] BEAM_BREAK_PORTS = {1, 2, 3, 4, 5, 6};

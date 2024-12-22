@@ -26,15 +26,15 @@ public class IndexerIOTalonFX implements IndexerIO {
         currentNumOfPieces = 0;        
         formerNumOfPieces = 0;
 
-        wheelMotor = new TalonFX(Constants.SPINNER_ID);
+        wheelMotor = new TalonFX(IndexerConstants.SPINNER_ID);
 
         speedController = new PIDController(0, 0, 0);
 
         beamBreaks = new DigitalInput[6];
         for (int i = 0; i < 6; i++) {
-            beamBreaks[i] = new DigitalInput(Constants.BEAM_BREAK_PORTS[i]);
+            beamBreaks[i] = new DigitalInput(IndexerConstants.BEAM_BREAK_PORTS[i]);
             beamBreakDebouncers[i] = new Debouncer(
-                Constants.DEBOUNCE_TIME,
+                IndexerConstants.DEBOUNCE_TIME,
                 DebounceType.kBoth
             );
         }
