@@ -3,10 +3,7 @@ package frc.robot.subsystems.Elevator;
 import static frc.robot.Constants.ROBOT_MODE;
 
 import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.inputs.LoggableInputs;
-
 import frc.robot.pioneersLib.subsystem.Subsystem;
-import frc.robot.subsystems.Elevator.ElevatorIO.ElevatorIOInputs;
 
 public class Elevator extends Subsystem<ElevatorStates> {
     private static Elevator instance;

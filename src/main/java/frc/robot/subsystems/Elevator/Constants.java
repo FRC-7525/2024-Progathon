@@ -17,6 +17,7 @@ public final class Constants {
     public static final boolean SIMULATE_GRAVITY = true;
     public static final double STARTING_HEIGHT = 1.54305;
 
+    //idk these values
     public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(1, 1, 1);
     public static final Constraints TRAPEZOID_PROFILE_CONSTRAINTS = new TrapezoidProfile.Constraints(1, .5);
     public static final double POSITION_TOLERANCE = .1;
