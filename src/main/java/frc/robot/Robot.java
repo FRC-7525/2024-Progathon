@@ -23,7 +23,7 @@ public class Robot extends LoggedRobot {
     @Override
     public void robotInit() {
 
-        switch (Constants.ROBOT_MODE) {
+        switch (GlobalConstants.ROBOT_MODE) {
             case REAL:
                 Logger.addDataReceiver(new NT4Publisher());
                 Logger.addDataReceiver(new WPILOGWriter());

@@ -8,8 +8,8 @@ import frc.robot.pioneersLib.misc.VisionUtil;
 import frc.robot.pioneersLib.subsystem.Subsystem;
 import frc.robot.subsystems.Drive.Drive;
 
-import static frc.robot.Constants.Vision.*;
-import static frc.robot.Constants.*;
+import static frc.robot.GlobalConstants.Vision.*;
+import static frc.robot.GlobalConstants.*;
 
 
 public class Vision extends Subsystem<VisionStates> {

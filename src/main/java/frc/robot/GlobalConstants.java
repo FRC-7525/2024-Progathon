@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.pioneersLib.misc.VisionUtil.CameraResolution;
 import frc.robot.subsystems.Drive.Drive.SysIdMode;
 
-public final class Constants {
+public final class GlobalConstants {
 
     public enum RobotMode {
         REAL,
