@@ -1,7 +1,7 @@
 package frc.robot.subsystems.Manager;
 
-import static frc.robot.Constants.*;
-import static frc.robot.Constants.Controllers.TEST_CONTROLLER;
+import static frc.robot.GlobalConstants.*;
+import static frc.robot.GlobalConstants.Controllers.TEST_CONTROLLER;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.pioneersLib.subsystem.Subsystem;
 import frc.robot.subsystems.Drive.Drive;
+import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Vision.Vision;
 
 public class Manager extends Subsystem<ManagerStates> {
@@ -18,6 +19,7 @@ public class Manager extends Subsystem<ManagerStates> {
     private final Drive drive = Drive.getInstance();
     private final Vision vision = Vision.getInstance();
     private final CommandScheduler commandScheduler = CommandScheduler.getInstance();
+    private final Intake intake = Intake.getInstance();
     // Change to change the subsystem that gets tested (has runnable sysID tests) saftey ish
     private final Subsystem<?> sysIdSubsystem = drive;
 
@@ -51,6 +53,7 @@ public class Manager extends Subsystem<ManagerStates> {
 
         drive.periodic();
         vision.periodic();
+        intake.periodic();
 
         // Other subsystem periodics go here
     }

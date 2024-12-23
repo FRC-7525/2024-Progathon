@@ -3,8 +3,8 @@ package frc.robot.subsystems.Drive;
 import frc.robot.pioneersLib.subsystem.SubsystemStates;
 
 import static edu.wpi.first.units.Units.*;
-import static frc.robot.Constants.Controllers.*;
-import static frc.robot.Constants.Drive.*;
+import static frc.robot.GlobalConstants.Controllers.*;
+import static frc.robot.GlobalConstants.Drive.*;
 import static frc.robot.subsystems.Drive.TunerConstants.*;
 
 /**
