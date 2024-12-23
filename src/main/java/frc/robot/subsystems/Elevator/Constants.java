@@ -26,4 +26,8 @@ public final class Constants {
 
     public static final FFConstants FF_CONSTANTS = new FFConstants(.1, .1, .1, .1);
 
+    //more random values
+    public static final double HIGH_POSITION_HEIGHT = 1.4;
+    public static final double MID_POSITION_HEIGHT = .5;
+    public static final double IDLE_POSITION_HEIGHT = 0;
 }
