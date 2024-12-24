@@ -3,10 +3,10 @@ package frc.robot.subsystems.Intake;
 import frc.robot.pioneersLib.subsystem.SubsystemStates;
 
 public enum IntakeStates implements SubsystemStates {
-    INTAKING(Constants.INTAKING_SPEED, Constants.INTAKING_PIVOT, "INTAKING"),
-    OUTTAKING(Constants.OUTTAKING_SPEED, Constants.OUTTAKING_PIVOT, "OUTTAKING"),
-    PASSING(Constants.PASSING_SPEED, Constants.PASSING_PIVOT, "PASSING"),
-    IDLE(Constants.IDLE_SPEED, Constants.IDLE_PIVOT, "IDLE");
+    INTAKING(IntakeConstants.INTAKING_SPEED, IntakeConstants.INTAKING_PIVOT, "INTAKING"),
+    OUTTAKING(IntakeConstants.OUTTAKING_SPEED, IntakeConstants.OUTTAKING_PIVOT, "OUTTAKING"),
+    PASSING(IntakeConstants.PASSING_SPEED, IntakeConstants.PASSING_PIVOT, "PASSING"),
+    IDLE(IntakeConstants.IDLE_SPEED, IntakeConstants.IDLE_PIVOT, "IDLE");
 
     IntakeStates(Double wheelSpeed, double pivotSetpoint, String stateString) {
         this.wheelSpeed = wheelSpeed;

@@ -1,6 +1,8 @@
 package frc.robot.subsystems.Intake;
 
 
+import static frc.robot.GlobalConstants.SIM_DELTA_TIME;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
@@ -9,19 +11,29 @@ import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 
 public class IntakeIOSim implements IntakeIO {
-    SingleJointedArmSim pivotSim;
-    DCMotorSim wheelMotorSim;
-    PIDController pivotController;
-    PIDController wheelSpeedController;
+    private SingleJointedArmSim pivotSim;
+    private DCMotorSim wheelMotorSim;
+    private PIDController pivotController;
+    private PIDController wheelSpeedController;
 
-    double wheelSpeedSetpoint;
-    double pivotPositionSetpoint;
+    private double wheelSpeedSetpoint;
+    private double pivotPositionSetpoint;
 
     IntakeIOSim() {
-        pivotSim = new SingleJointedArmSim(DCMotor.getKrakenX60(Constants.NUM_PIVOT_MOTORS), Constants.PIVOT_GEARING, Constants.PIVOT_MOI, Constants.PIVOT_ARM_LENGTH, Units.degreesToRadians(Constants.MIN_PIVOT_ANGLE), Units.degreesToRadians(Constants.MAX_PIVOT_ANGLE), false, Units.degreesToRadians(Constants.STARTING_PIVOT_ANGLE));
-        wheelMotorSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX60(Constants.NUM_WHEEL_MOTORS), Constants.WHEEL_MOTOR_MOI, Constants.WHEEL_MOTOR_GEARING), DCMotor.getKrakenX60(Constants.NUM_WHEEL_MOTORS));
-        pivotController = new PIDController(0, 0, 0);
-        wheelSpeedController = new PIDController(0, 0, 0);
+        pivotSim = new SingleJointedArmSim(DCMotor.getKrakenX60(IntakeConstants.Sim.NUM_PIVOT_MOTORS),
+        IntakeConstants.Sim.PIVOT_GEARING, IntakeConstants.Sim.PIVOT_MOI, IntakeConstants.Sim.PIVOT_ARM_LENGTH,
+        Units.degreesToRadians(IntakeConstants.Sim.MIN_PIVOT_ANGLE),
+        Units.degreesToRadians(IntakeConstants.Sim.MAX_PIVOT_ANGLE),
+        false, Units.degreesToRadians(IntakeConstants.Sim.STARTING_PIVOT_ANGLE));
+        
+        wheelMotorSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX60(IntakeConstants.Sim.NUM_WHEEL_MOTORS),
+        IntakeConstants.Sim.WHEEL_MOTOR_MOI, IntakeConstants.Sim.WHEEL_MOTOR_GEARING),
+        DCMotor.getKrakenX60(IntakeConstants.Sim.NUM_WHEEL_MOTORS));
+        
+        pivotController = new PIDController(IntakeConstants.Sim.PIVOT_PID_CONSTANTS.kP,
+        IntakeConstants.Sim.PIVOT_PID_CONSTANTS.kI, IntakeConstants.Sim.PIVOT_PID_CONSTANTS.kD);
+        wheelSpeedController = new PIDController(IntakeConstants.Sim.WHEEL_PID_CONSTANTS.kP,
+        IntakeConstants.Sim.WHEEL_PID_CONSTANTS.kI, IntakeConstants.Sim.WHEEL_PID_CONSTANTS.kD);
 
         wheelSpeedSetpoint = 0;
         pivotPositionSetpoint = 0;
@@ -29,13 +41,13 @@ public class IntakeIOSim implements IntakeIO {
 
     @Override
     public void updateInputs(IntakeIOInputs input) {
+        pivotSim.update(SIM_DELTA_TIME);
+        wheelMotorSim.update(SIM_DELTA_TIME);
+
         input.wheelSpeed = Units.radiansToDegrees(wheelMotorSim.getAngularVelocityRadPerSec());
         input.wheelSpeedSetpoint = wheelSpeedSetpoint;
         input.pivotPosition = Units.radiansToDegrees(pivotSim.getAngleRads());
         input.pivotSetpoint = pivotPositionSetpoint;
-
-        pivotSim.update(0.02);
-        wheelMotorSim.update(0.02);
     }
 
     @Override

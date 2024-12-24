@@ -36,6 +36,9 @@ public class Manager extends Subsystem<ManagerStates> {
             addRunnableTrigger(() -> {commandScheduler.schedule(sysIdSubsystem.sysIdQuasistatic(Direction.kForward));}, () -> TEST_CONTROLLER.getXButtonPressed());
             addRunnableTrigger(() -> {commandScheduler.schedule(sysIdSubsystem.sysIdQuasistatic(Direction.kReverse));}, () -> TEST_CONTROLLER.getYButtonPressed());
         }
+
+        addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING, () -> Controllers.DRIVER_CONTROLLER.getAButtonPressed());
+        addTrigger(ManagerStates.INTAKING, ManagerStates.IDLE, () -> Controllers.DRIVER_CONTROLLER.getAButtonPressed());
     }
 
     public static Manager getInstance() {
@@ -47,9 +50,10 @@ public class Manager extends Subsystem<ManagerStates> {
 
     @Override
     public void runState() {
-
         Logger.recordOutput("Manager/State", getState().getStateString());
         Logger.recordOutput("Manager/State Time", getStateTime());
+
+        intake.setState(getState().getIntakeState());
 
         drive.periodic();
         vision.periodic();
