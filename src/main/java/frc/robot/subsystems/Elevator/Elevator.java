@@ -15,7 +15,9 @@ public class Elevator extends Subsystem<ElevatorStates> {
         super("Elevator", ElevatorStates.IDLE);
         this.io = switch (ROBOT_MODE) {
             case SIM -> new ElevatorIOSim();
-            default -> new ElevatorIOSim();
+            case REAL -> new ElevatorIOReal();
+            case TESTING -> new ElevatorIOReal();
+            case REPLAY -> new ElevatorIOSim();
         };
         inputs = new ElevatorIOInputsAutoLogged();
     }
@@ -29,7 +31,7 @@ public class Elevator extends Subsystem<ElevatorStates> {
 
     @Override
     protected void runState() {
-        io.setHeightSetpoint(getState().getTargetHeight());
+        io.setHeightGoalpoint(getState().getTargetHeight());
         io.runElevator();
         
         io.updateInputs(inputs);

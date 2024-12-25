@@ -17,22 +17,22 @@ public class ElevatorIOSim implements ElevatorIO{
 
 
     public ElevatorIOSim() {
-        elevatorSim = new ElevatorSim(Constants.GEARBOX, Constants.GEARING,
-        Constants.CARRIAGE_MASS, Constants.DRUM_RADIUS,
-        Constants.MIN_HEIGHT, Constants.MAX_HEIGHT,
-        Constants.SIMULATE_GRAVITY, Constants.STARTING_HEIGHT);
+        elevatorSim = new ElevatorSim(Constants.Sim.GEARBOX, Constants.Sim.GEARING,
+        Constants.Sim.CARRIAGE_MASS, Constants.Sim.DRUM_RADIUS,
+        Constants.Sim.MIN_HEIGHT, Constants.Sim.MAX_HEIGHT,
+        Constants.Sim.SIMULATE_GRAVITY, Constants.Sim.STARTING_HEIGHT);
 
-        pidController = new ProfiledPIDController(Constants.PROFILLED_PID_CONSTANTS.kP,
-        Constants.PROFILLED_PID_CONSTANTS.kI,
-        Constants.PROFILLED_PID_CONSTANTS.kD,
+        pidController = new ProfiledPIDController(Constants.Sim.PROFILLED_PID_CONSTANTS.kP,
+        Constants.Sim.PROFILLED_PID_CONSTANTS.kI,
+        Constants.Sim.PROFILLED_PID_CONSTANTS.kD,
         Constants.TRAPEZOID_PROFILE_CONSTRAINTS);
         pidController.setTolerance(Constants.POSITION_TOLERANCE, Constants.VELOCITY_TOLERANCE);
-        pidController.setIZone(Constants.I_ZONE);
+        pidController.setIZone(Constants.Sim.PROFILLED_PID_CONSTANTS.iZone);
 
-        ffcontroller = new ElevatorFeedforward(Constants.FF_CONSTANTS.kS,
-        Constants.FF_CONSTANTS.kG,
-        Constants.FF_CONSTANTS.kV,
-        Constants.FF_CONSTANTS.kA);
+        ffcontroller = new ElevatorFeedforward(Constants.Sim.FF_CONSTANTS.kS,
+        Constants.Sim.FF_CONSTANTS.kG,
+        Constants.Sim.FF_CONSTANTS.kV,
+        Constants.Sim.FF_CONSTANTS.kA);
 
     }
 
@@ -41,14 +41,18 @@ public class ElevatorIOSim implements ElevatorIO{
 
         inputs.currentElevatorHeight = elevatorSim.getPositionMeters();
         inputs.elevatorHeightSetpoint = pidController.getSetpoint().position;
+        inputs.elevatorHeightGoalpoint = pidController.getGoal().position;
+
         inputs.elevatorVelocity = elevatorSim.getVelocityMetersPerSecond();
         inputs.elevatorVelocitySetpoint = pidController.getSetpoint().velocity;
+        inputs.elevatorVelocityGoalpoint = pidController.getGoal().velocity;
+
         inputs.leftMotorVoltInput = appliedVoltage;
         inputs.rightMotorVoltInput = appliedVoltage;
     }
 
     @Override
-    public void setHeightSetpoint(double height) {
+    public void setHeightGoalpoint(double height) {
         pidController.setGoal(height);
     }
 
@@ -60,7 +64,7 @@ public class ElevatorIOSim implements ElevatorIO{
 
     @Override
     public boolean nearTarget() {
-        return pidController.atSetpoint();
+        return pidController.atGoal();
     }
     
 }

@@ -8,13 +8,15 @@ public interface ElevatorIO {
     public static class ElevatorIOInputs {
         public double currentElevatorHeight;
         public double elevatorHeightSetpoint;
+        public double elevatorHeightGoalpoint;
         public double elevatorVelocity;
         public double elevatorVelocitySetpoint;
+        public double elevatorVelocityGoalpoint;
         public double leftMotorVoltInput;
         public double rightMotorVoltInput;
     }
 
-    public void setHeightSetpoint(double height);
+    public void setHeightGoalpoint(double height);
 
     public void updateInputs(ElevatorIOInputs inputs);
 
