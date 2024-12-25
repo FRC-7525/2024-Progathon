@@ -18,9 +18,9 @@ public class ElevatorIOSim implements ElevatorIO{
 
     public ElevatorIOSim() {
         elevatorSim = new ElevatorSim(ElevatorConstants.Sim.GEARBOX, ElevatorConstants.Sim.GEARING,
-        ElevatorConstants.Sim.CARRIAGE_MASS, ElevatorConstants.Sim.DRUM_RADIUS,
-        ElevatorConstants.Sim.MIN_HEIGHT, ElevatorConstants.Sim.MAX_HEIGHT,
-        ElevatorConstants.Sim.SIMULATE_GRAVITY, ElevatorConstants.Sim.STARTING_HEIGHT);
+        ElevatorConstants.Sim.CARRIAGE_MASS.magnitude(), ElevatorConstants.Sim.DRUM_RADIUS.magnitude(),
+        ElevatorConstants.Sim.MIN_HEIGHT.magnitude(), ElevatorConstants.Sim.MAX_HEIGHT.magnitude(),
+        ElevatorConstants.Sim.SIMULATE_GRAVITY, ElevatorConstants.Sim.STARTING_HEIGHT.magnitude());
 
         pidController = new ProfiledPIDController(ElevatorConstants.Sim.PROFILLED_PID_CONSTANTS.kP,
         ElevatorConstants.Sim.PROFILLED_PID_CONSTANTS.kI,

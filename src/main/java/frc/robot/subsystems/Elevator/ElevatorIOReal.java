@@ -45,13 +45,13 @@ public class ElevatorIOReal implements ElevatorIO {
         leftConfigurations.MotorOutput.Inverted = ElevatorConstants.Real.LEFT_INVERTED ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
         leftConfigurations.MotorOutput.NeutralMode = ElevatorConstants.Real.LEFT_NEUTRAL_MODE;
         leftConfigurations.CurrentLimits.StatorCurrentLimitEnable = ElevatorConstants.Real.LEFT_STRATOR_CURRENT_LIMIT_ENABLED;
-        leftConfigurations.CurrentLimits.StatorCurrentLimit = ElevatorConstants.Real.LEFT_STRATOR_CURRENT_LIMIT;
+        leftConfigurations.CurrentLimits.StatorCurrentLimit = ElevatorConstants.Real.LEFT_STRATOR_CURRENT_LIMIT.magnitude();
         leftConfigurator.apply(leftConfigurations);
 
         rightConfigurations.MotorOutput.Inverted = ElevatorConstants.Real.RIGHT_INVERTED ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
         rightConfigurations.MotorOutput.NeutralMode = ElevatorConstants.Real.RIGHT_NEUTRAL_MODE;
         rightConfigurations.CurrentLimits.StatorCurrentLimitEnable = ElevatorConstants.Real.RIGHT_STRATOR_CURRENT_LIMIT_ENABLED;
-        rightConfigurations.CurrentLimits.StatorCurrentLimit = ElevatorConstants.Real.RIGHT_STRATOR_CURRENT_LIMIT;
+        rightConfigurations.CurrentLimits.StatorCurrentLimit = ElevatorConstants.Real.RIGHT_STRATOR_CURRENT_LIMIT.magnitude();
         rightConfigurator.apply(rightConfigurations);
 
         //PID and FF controller setup
