@@ -3,9 +3,9 @@ package frc.robot.subsystems.Elevator;
 import frc.robot.pioneersLib.subsystem.SubsystemStates;
 
 public enum ElevatorStates implements SubsystemStates {
-    HIGH(Constants.HIGH_POSITION_HEIGHT, "HIGH"),
-    MID(Constants.MID_POSITION_HEIGHT, "MID"),
-    IDLE(Constants.IDLE_POSITION_HEIGHT, "IDLE");
+    HIGH(ElevatorConstants.HIGH_POSITION_HEIGHT, "HIGH"),
+    MID(ElevatorConstants.MID_POSITION_HEIGHT, "MID"),
+    IDLE(ElevatorConstants.IDLE_POSITION_HEIGHT, "IDLE");
 
     ElevatorStates(double targetHeight, String stateString) {
         this.targetHeight = targetHeight;

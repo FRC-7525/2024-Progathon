@@ -21,16 +21,16 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.Constants;
+import frc.robot.GlobalConstants;
 import frc.robot.pioneersLib.misc.LocalADStarAK;
 import frc.robot.pioneersLib.subsystem.Subsystem;
 
 import org.littletonrobotics.junction.Logger;
 
 import static edu.wpi.first.units.Units.*;
-import static frc.robot.Constants.Controllers.*;
-import static frc.robot.Constants.*;
-import static frc.robot.Constants.Drive.*;
+import static frc.robot.GlobalConstants.Controllers.*;
+import static frc.robot.GlobalConstants.*;
+import static frc.robot.GlobalConstants.Drive.*;
 import static frc.robot.subsystems.Drive.TunerConstants.kSpeedAt12Volts;
 
 public class Drive extends Subsystem<DriveStates> {
@@ -107,8 +107,8 @@ public class Drive extends Subsystem<DriveStates> {
             DriverStation.getAlliance().ifPresent(allianceColor -> {
                 driveIO.getDrive().setOperatorPerspectiveForward(
                         allianceColor == Alliance.Red
-                                ? Constants.Drive.RED_ALLIANCE_PERSPECTIVE_ROTATION
-                                : Constants.Drive.BLUE_ALLIANCE_PERSPECTIVE_ROTATION);
+                                ? GlobalConstants.Drive.RED_ALLIANCE_PERSPECTIVE_ROTATION
+                                : GlobalConstants.Drive.BLUE_ALLIANCE_PERSPECTIVE_ROTATION);
                 robotMirrored = true;
             });
         }
@@ -263,7 +263,7 @@ public class Drive extends Subsystem<DriveStates> {
 
     @Override
     public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-        switch (Constants.Drive.SYS_ID_MODE) {
+        switch (GlobalConstants.Drive.SYS_ID_MODE) {
             case ROTATION:
                 return sysIdRoutineRotation.quasistatic(direction);
             case TRANSLATION:
@@ -277,7 +277,7 @@ public class Drive extends Subsystem<DriveStates> {
 
     @Override
     public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-        switch (Constants.Drive.SYS_ID_MODE) {
+        switch (GlobalConstants.Drive.SYS_ID_MODE) {
             case ROTATION:
                 return sysIdRoutineRotation.dynamic(direction);
             case TRANSLATION:

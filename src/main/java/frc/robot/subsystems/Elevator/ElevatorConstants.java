@@ -8,7 +8,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import frc.robot.pioneersLib.controlConstants.FFConstants;
 
-public final class Constants {
+public final class ElevatorConstants {
     
     public static final double POSITION_TOLERANCE = 0;
     public static final double VELOCITY_TOLERANCE = 0;

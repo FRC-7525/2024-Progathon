@@ -34,7 +34,7 @@ public class ElevatorIOReal implements ElevatorIO {
 
         leftMotorVoltage = 0;
         rightMotorVoltage = 0;
-        
+
         //Motor configs
         leftConfigurator = leftMotor.getConfigurator();
         rightConfigurator = rightMotor.getConfigurator();
@@ -42,27 +42,27 @@ public class ElevatorIOReal implements ElevatorIO {
         leftConfigurations = new TalonFXConfiguration();
         rightConfigurations = new TalonFXConfiguration();
 
-        leftConfigurations.MotorOutput.Inverted = Constants.Real.LEFT_INVERTED ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
-        leftConfigurations.MotorOutput.NeutralMode = Constants.Real.LEFT_NEUTRAL_MODE;
-        leftConfigurations.CurrentLimits.StatorCurrentLimitEnable = Constants.Real.LEFT_STRATOR_CURRENT_LIMIT_ENABLED;
-        leftConfigurations.CurrentLimits.StatorCurrentLimit = Constants.Real.LEFT_STRATOR_CURRENT_LIMIT;
+        leftConfigurations.MotorOutput.Inverted = ElevatorConstants.Real.LEFT_INVERTED ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+        leftConfigurations.MotorOutput.NeutralMode = ElevatorConstants.Real.LEFT_NEUTRAL_MODE;
+        leftConfigurations.CurrentLimits.StatorCurrentLimitEnable = ElevatorConstants.Real.LEFT_STRATOR_CURRENT_LIMIT_ENABLED;
+        leftConfigurations.CurrentLimits.StatorCurrentLimit = ElevatorConstants.Real.LEFT_STRATOR_CURRENT_LIMIT;
         leftConfigurator.apply(leftConfigurations);
 
-        rightConfigurations.MotorOutput.Inverted = Constants.Real.RIGHT_INVERTED ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
-        rightConfigurations.MotorOutput.NeutralMode = Constants.Real.RIGHT_NEUTRAL_MODE;
-        rightConfigurations.CurrentLimits.StatorCurrentLimitEnable = Constants.Real.RIGHT_STRATOR_CURRENT_LIMIT_ENABLED;
-        rightConfigurations.CurrentLimits.StatorCurrentLimit = Constants.Real.RIGHT_STRATOR_CURRENT_LIMIT;
+        rightConfigurations.MotorOutput.Inverted = ElevatorConstants.Real.RIGHT_INVERTED ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+        rightConfigurations.MotorOutput.NeutralMode = ElevatorConstants.Real.RIGHT_NEUTRAL_MODE;
+        rightConfigurations.CurrentLimits.StatorCurrentLimitEnable = ElevatorConstants.Real.RIGHT_STRATOR_CURRENT_LIMIT_ENABLED;
+        rightConfigurations.CurrentLimits.StatorCurrentLimit = ElevatorConstants.Real.RIGHT_STRATOR_CURRENT_LIMIT;
         rightConfigurator.apply(rightConfigurations);
 
         //PID and FF controller setup
-        pidController = new ProfiledPIDController(Constants.Real.PROFILLED_PID_CONSTANTS.kP, Constants.Real.PROFILLED_PID_CONSTANTS.kI,
-        Constants.Real.PROFILLED_PID_CONSTANTS.kD, Constants.TRAPEZOID_PROFILE_CONSTRAINTS);
-        pidController.setTolerance(Constants.POSITION_TOLERANCE, Constants.VELOCITY_TOLERANCE);
-        pidController.setIZone(Constants.Real.PROFILLED_PID_CONSTANTS.iZone);
+        pidController = new ProfiledPIDController(ElevatorConstants.Real.PROFILLED_PID_CONSTANTS.kP, ElevatorConstants.Real.PROFILLED_PID_CONSTANTS.kI,
+        ElevatorConstants.Real.PROFILLED_PID_CONSTANTS.kD, ElevatorConstants.TRAPEZOID_PROFILE_CONSTRAINTS);
+        pidController.setTolerance(ElevatorConstants.POSITION_TOLERANCE, ElevatorConstants.VELOCITY_TOLERANCE);
+        pidController.setIZone(ElevatorConstants.Real.PROFILLED_PID_CONSTANTS.iZone);
 
-        ffcontroller = new ElevatorFeedforward(Constants.Real.FF_CONSTANTS.kS,
-        Constants.Real.FF_CONSTANTS.kG, Constants.Real.FF_CONSTANTS.kV,
-        Constants.Real.FF_CONSTANTS.kA);
+        ffcontroller = new ElevatorFeedforward(ElevatorConstants.Real.FF_CONSTANTS.kS,
+        ElevatorConstants.Real.FF_CONSTANTS.kG, ElevatorConstants.Real.FF_CONSTANTS.kV,
+        ElevatorConstants.Real.FF_CONSTANTS.kA);
     }
 
     @Override

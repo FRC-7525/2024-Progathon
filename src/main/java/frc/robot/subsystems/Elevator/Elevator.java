@@ -1,6 +1,6 @@
 package frc.robot.subsystems.Elevator;
 
-import static frc.robot.Constants.ROBOT_MODE;
+import static frc.robot.GlobalConstants.ROBOT_MODE;
 
 import org.littletonrobotics.junction.Logger;
 import frc.robot.pioneersLib.subsystem.Subsystem;

@@ -1,7 +1,7 @@
 package frc.robot.subsystems.Manager;
 
-import static frc.robot.Constants.*;
-import static frc.robot.Constants.Controllers.TEST_CONTROLLER;
+import static frc.robot.GlobalConstants.*;
+import static frc.robot.GlobalConstants.Controllers.TEST_CONTROLLER;
 
 import org.littletonrobotics.junction.Logger;
 

@@ -10,7 +10,7 @@ import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Pose2d;
-import frc.robot.Constants;
+import frc.robot.GlobalConstants;
 
 public class VisionIOReal implements VisionIO {
 
@@ -28,10 +28,10 @@ public class VisionIOReal implements VisionIO {
         frontCamera = new PhotonCamera("Front Camera");
 
         // Pose estimators :/
-        frontEstimator = new PhotonPoseEstimator(Constants.Vision.APRIL_TAG_FIELD_LAYOUT, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, Constants.Vision.ROBOT_TO_FRONT_CAMERA);
-        sideEstimator = new PhotonPoseEstimator(Constants.Vision.APRIL_TAG_FIELD_LAYOUT, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, Constants.Vision.ROBOT_TO_SIDE_CAMERA);
-        sideDebouncer = new Debouncer(Constants.Vision.CAMERA_DEBOUNCE_TIME, DebounceType.kFalling);
-        frontDebouncer = new Debouncer(Constants.Vision.CAMERA_DEBOUNCE_TIME, DebounceType.kFalling);
+        frontEstimator = new PhotonPoseEstimator(GlobalConstants.Vision.APRIL_TAG_FIELD_LAYOUT, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, GlobalConstants.Vision.ROBOT_TO_FRONT_CAMERA);
+        sideEstimator = new PhotonPoseEstimator(GlobalConstants.Vision.APRIL_TAG_FIELD_LAYOUT, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, GlobalConstants.Vision.ROBOT_TO_SIDE_CAMERA);
+        sideDebouncer = new Debouncer(GlobalConstants.Vision.CAMERA_DEBOUNCE_TIME, DebounceType.kFalling);
+        frontDebouncer = new Debouncer(GlobalConstants.Vision.CAMERA_DEBOUNCE_TIME, DebounceType.kFalling);
     }
 
     @Override
