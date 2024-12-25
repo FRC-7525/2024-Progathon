@@ -31,7 +31,9 @@ public class Intake extends Subsystem<IntakeStates>{
         if (instance == null) {
             IntakeIO intakeIO = switch(ROBOT_MODE) {
                 case SIM -> new IntakeIOSim();
-                default -> new IntakeIOSim();
+                case REAL -> new IntakeIOReal();
+                case TESTING -> new IntakeIOReal();
+                case REPLAY -> new IntakeIOSim();
             };
             instance = new Intake(intakeIO);
         }

@@ -14,10 +14,12 @@ public class IntakeIOReal implements IntakeIO {
     private double wheelSpeedSetpoint;
 
     public IntakeIOReal() {
-        wheelMotor = new TalonFX(10);
-        pivotMotor = new TalonFX(11);
-        pivotController = new PIDController(0, 0, 0);
-        wheelSpeedController = new PIDController(0, 0, 0);
+        wheelMotor = new TalonFX(IntakeConstants.Real.WHEEL_MOTOR_CANID);
+        pivotMotor = new TalonFX(IntakeConstants.Real.PIVOT_MOTOR_CANID);
+        pivotController = new PIDController(IntakeConstants.Real.PIVOT_PID_CONSTANTS.kP,
+        IntakeConstants.Real.PIVOT_PID_CONSTANTS.kI, IntakeConstants.Real.PIVOT_PID_CONSTANTS.kD);
+        wheelSpeedController = new PIDController(IntakeConstants.Real.WHEEL_PID_CONSTANTS.kP,
+        IntakeConstants.Real.WHEEL_PID_CONSTANTS.kI, IntakeConstants.Real.WHEEL_PID_CONSTANTS.kD);
     }
 
     @Override

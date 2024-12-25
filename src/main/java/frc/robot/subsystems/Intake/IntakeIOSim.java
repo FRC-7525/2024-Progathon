@@ -21,13 +21,13 @@ public class IntakeIOSim implements IntakeIO {
 
     IntakeIOSim() {
         pivotSim = new SingleJointedArmSim(DCMotor.getKrakenX60(IntakeConstants.Sim.NUM_PIVOT_MOTORS),
-        IntakeConstants.Sim.PIVOT_GEARING, IntakeConstants.Sim.PIVOT_MOI, IntakeConstants.Sim.PIVOT_ARM_LENGTH,
-        Units.degreesToRadians(IntakeConstants.Sim.MIN_PIVOT_ANGLE),
-        Units.degreesToRadians(IntakeConstants.Sim.MAX_PIVOT_ANGLE),
-        false, Units.degreesToRadians(IntakeConstants.Sim.STARTING_PIVOT_ANGLE));
+        IntakeConstants.Sim.PIVOT_GEARING, IntakeConstants.Sim.PIVOT_MOI.magnitude(), IntakeConstants.Sim.PIVOT_ARM_LENGTH.magnitude(),
+        Units.degreesToRadians(IntakeConstants.Sim.MIN_PIVOT_ANGLE.magnitude()),
+        Units.degreesToRadians(IntakeConstants.Sim.MAX_PIVOT_ANGLE.magnitude()),
+        false, Units.degreesToRadians(IntakeConstants.Sim.STARTING_PIVOT_ANGLE.magnitude()));
         
         wheelMotorSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX60(IntakeConstants.Sim.NUM_WHEEL_MOTORS),
-        IntakeConstants.Sim.WHEEL_MOTOR_MOI, IntakeConstants.Sim.WHEEL_MOTOR_GEARING),
+        IntakeConstants.Sim.WHEEL_MOTOR_MOI.magnitude(), IntakeConstants.Sim.WHEEL_MOTOR_GEARING),
         DCMotor.getKrakenX60(IntakeConstants.Sim.NUM_WHEEL_MOTORS));
         
         pivotController = new PIDController(IntakeConstants.Sim.PIVOT_PID_CONSTANTS.kP,
