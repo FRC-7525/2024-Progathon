@@ -6,6 +6,7 @@ public interface ElevatorIO {
 
     @AutoLog
     public static class ElevatorIOInputs {
+        public String stateString;
         public double currentElevatorHeight;
         public double elevatorHeightSetpoint;
         public double elevatorHeightGoalpoint;

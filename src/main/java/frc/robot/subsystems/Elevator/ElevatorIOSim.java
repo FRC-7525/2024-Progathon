@@ -10,7 +10,6 @@ import com.ctre.phoenix6.sim.TalonFXSimState;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.GlobalConstants;
 
 public class ElevatorIOSim implements ElevatorIO{
@@ -75,8 +74,6 @@ public class ElevatorIOSim implements ElevatorIO{
         leftMotorSim.setRotorVelocity(elevatorSim.getVelocityMetersPerSecond() / metersPerRotation);
         rightMotorSim.setRawRotorPosition(-elevatorSim.getPositionMeters() / metersPerRotation); // negative bc right is inversed (probably)
         rightMotorSim.setRotorVelocity(-elevatorSim.getVelocityMetersPerSecond() / metersPerRotation);
-        
-        SmartDashboard.putData("Elevator PID", pidController);
     }
 
     @Override

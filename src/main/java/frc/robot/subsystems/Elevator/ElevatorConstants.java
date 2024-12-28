@@ -28,8 +28,8 @@ public final class ElevatorConstants {
     public static final Current ZEROING_CURRENT_LIMIT = Amps.of(10.0);
 
     public static final Distance HIGH_POSITION_HEIGHT = Meters.of(2.5146);
-    public static final Distance MID_POSITION_HEIGHT = Meters.of(0); //mid is all the way down according to nick
-    public static final Distance IDLE_POSITION_HEIGHT = Meters.of(0);
+    public static final Distance MID_POSITION_HEIGHT = Meters.of(1.54305); //mid is all the way down according to nick
+    public static final Distance IDLE_POSITION_HEIGHT = Meters.of(1.54305);
     public static final Distance METERS_PER_ROTATION = Meters.of(1); // random value lol
 
     public static class Sim {
@@ -39,12 +39,12 @@ public final class ElevatorConstants {
         public static final Distance DRUM_RADIUS = Meters.of(.5); // Random value cuz mech is bum
         public static final Distance MIN_HEIGHT = Meters.of(1.54305);
         public static final Distance MAX_HEIGHT = Meters.of(2.60985);
-        public static final boolean SIMULATE_GRAVITY = true;
+        public static final boolean SIMULATE_GRAVITY = false;
         public static final Distance STARTING_HEIGHT = Meters.of(1.54305);
         //idk these values
-        public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(0, 0, 0, 0);
+        public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(2, 0, 0, 0);
     
-        public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0, 0, 0);
+        public static final FFConstants FF_CONSTANTS = new FFConstants(.2, .2, 0, 0);
     
     }
 

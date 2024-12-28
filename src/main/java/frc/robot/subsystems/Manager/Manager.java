@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.pioneersLib.subsystem.Subsystem;
 import frc.robot.subsystems.Drive.Drive;
 import frc.robot.subsystems.Elevator.Elevator;
+import frc.robot.subsystems.Elevator.ElevatorStates;
 import frc.robot.subsystems.Vision.Vision;
 
 public class Manager extends Subsystem<ManagerStates> {
@@ -36,6 +37,8 @@ public class Manager extends Subsystem<ManagerStates> {
             addRunnableTrigger(() -> {commandScheduler.schedule(sysIdSubsystem.sysIdQuasistatic(Direction.kForward));}, () -> TEST_CONTROLLER.getXButtonPressed());
             addRunnableTrigger(() -> {commandScheduler.schedule(sysIdSubsystem.sysIdQuasistatic(Direction.kReverse));}, () -> TEST_CONTROLLER.getYButtonPressed());
         }
+        addTrigger(ManagerStates.IDLE, ManagerStates.SCORING_HIGH, () -> Controllers.DRIVER_CONTROLLER.getXButtonPressed());
+        addTrigger(ManagerStates.SCORING_HIGH, ManagerStates.IDLE, () -> Controllers.DRIVER_CONTROLLER.getXButtonPressed());
     }
 
     public static Manager getInstance() {
@@ -50,6 +53,8 @@ public class Manager extends Subsystem<ManagerStates> {
 
         Logger.recordOutput("Manager/State", getState().getStateString());
         Logger.recordOutput("Manager/State Time", getStateTime());
+
+        elevator.setState(getState().getElevatorState());
 
         drive.periodic();
         vision.periodic();

@@ -39,6 +39,7 @@ public class Elevator extends Subsystem<ElevatorStates> {
         }
         
         io.updateInputs(inputs);
+        // Logger.recordOutput("Elevator State", getState());
         Logger.processInputs("Elevator", inputs);
     }
     
