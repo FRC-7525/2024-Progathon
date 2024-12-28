@@ -19,14 +19,16 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.pioneersLib.misc.VisionUtil.CameraResolution;
 import frc.robot.subsystems.Drive.Drive.SysIdMode;
 
-public final class Constants {
+public final class GlobalConstants {
 
     public enum RobotMode {
         REAL,
         TESTING,
-        SIM
+        SIM,
+        REPLAY;
     }
     public static final RobotMode ROBOT_MODE = "Crash".equals(System.getenv("CI_NAME")) ? RobotMode.SIM : RobotMode.SIM;
+    public static final double SIM_DELTA_TIME = 0.02;
 
     public static class Controllers {
         public static final XboxController DRIVER_CONTROLLER = new XboxController(0);
