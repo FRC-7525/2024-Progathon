@@ -4,7 +4,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.util.sendable.SendableRegistry;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.GlobalConstants;
 import frc.robot.GlobalConstants.RobotMode;
 
@@ -25,11 +25,6 @@ public class IntakeIOReal implements IntakeIO {
         IntakeConstants.Real.PIVOT_PID_CONSTANTS.kI, IntakeConstants.Real.PIVOT_PID_CONSTANTS.kD);
         wheelSpeedController = new PIDController(IntakeConstants.Real.WHEEL_PID_CONSTANTS.kP,
         IntakeConstants.Real.WHEEL_PID_CONSTANTS.kI, IntakeConstants.Real.WHEEL_PID_CONSTANTS.kD);
-
-        if (GlobalConstants.ROBOT_MODE == RobotMode.TESTING) {
-            SendableRegistry.setName(pivotController, "Intake", "Pivot PIDController");
-            SendableRegistry.setName(wheelSpeedController, "Intake", "Wheel Speed PIDController");
-        }
     }
 
     @Override
@@ -38,6 +33,11 @@ public class IntakeIOReal implements IntakeIO {
         inputs.pivotSetpoint = pivotPositionSetpoint;
         inputs.wheelSpeed = wheelMotor.getVelocity().getValueAsDouble();
         inputs.wheelSpeedSetpoint = wheelSpeedSetpoint;
+
+        if (GlobalConstants.ROBOT_MODE == RobotMode.TESTING) {
+            SmartDashboard.putData("Intake Pivot PID", pivotController);
+            SmartDashboard.putData("Intake Wheel Speed PID", wheelSpeedController);
+        }
     }
 
     @Override

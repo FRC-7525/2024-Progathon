@@ -19,7 +19,6 @@ public class Intake extends Subsystem<IntakeStates>{
 
     @Override
     protected void runState() {
-        Logger.recordOutput("Intake State", getState());
         io.setPivotSetpoint(getState().getPivotSetpoint());
         io.setWheelSpeed(getState().getWheelSpeedSetpoint());
 
