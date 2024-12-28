@@ -11,6 +11,7 @@ import frc.robot.pioneersLib.subsystem.Subsystem;
 import frc.robot.subsystems.Drive.Drive;
 import frc.robot.subsystems.Elevator.Elevator;
 import frc.robot.subsystems.Elevator.ElevatorStates;
+import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Vision.Vision;
 
 public class Manager extends Subsystem<ManagerStates> {
@@ -21,6 +22,7 @@ public class Manager extends Subsystem<ManagerStates> {
     private final Vision vision = Vision.getInstance();
     private final Elevator elevator = Elevator.getInstance();
     private final CommandScheduler commandScheduler = CommandScheduler.getInstance();
+    private final Intake intake = Intake.getInstance();
     // Change to change the subsystem that gets tested (has runnable sysID tests) saftey ish
     private final Subsystem<?> sysIdSubsystem = drive;
 
@@ -39,6 +41,9 @@ public class Manager extends Subsystem<ManagerStates> {
         }
         addTrigger(ManagerStates.IDLE, ManagerStates.SCORING_HIGH, () -> Controllers.DRIVER_CONTROLLER.getXButtonPressed());
         addTrigger(ManagerStates.SCORING_HIGH, ManagerStates.IDLE, () -> Controllers.DRIVER_CONTROLLER.getXButtonPressed());
+
+        addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING, () -> Controllers.DRIVER_CONTROLLER.getAButtonPressed());
+        addTrigger(ManagerStates.INTAKING, ManagerStates.IDLE, () -> Controllers.DRIVER_CONTROLLER.getAButtonPressed());
     }
 
     public static Manager getInstance() {
@@ -50,15 +55,16 @@ public class Manager extends Subsystem<ManagerStates> {
 
     @Override
     public void runState() {
-
         Logger.recordOutput("Manager/State", getState().getStateString());
         Logger.recordOutput("Manager/State Time", getStateTime());
 
         elevator.setState(getState().getElevatorState());
+        intake.setState(getState().getIntakeState());
 
         drive.periodic();
         vision.periodic();
         elevator.periodic();
+        intake.periodic();
 
         // Other subsystem periodics go here
     }

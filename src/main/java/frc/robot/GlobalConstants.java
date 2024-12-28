@@ -25,7 +25,7 @@ public final class GlobalConstants {
         REAL,
         TESTING,
         SIM,
-        REPLAY
+        REPLAY;
     }
     public static final RobotMode ROBOT_MODE = "Crash".equals(System.getenv("CI_NAME")) ? RobotMode.SIM : RobotMode.SIM;
     public static final double SIM_DELTA_TIME = 0.02;
