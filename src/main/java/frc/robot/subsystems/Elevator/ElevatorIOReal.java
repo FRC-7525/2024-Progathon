@@ -1,6 +1,9 @@
 package frc.robot.subsystems.Elevator;
 
 import static edu.wpi.first.units.Units.MetersPerSecond;
+import static frc.robot.GlobalConstants.ROBOT_MODE;
+import static frc.robot.subsystems.Elevator.ElevatorConstants.Real.*;
+import static frc.robot.subsystems.Elevator.ElevatorConstants.*;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
@@ -9,6 +12,9 @@ import com.ctre.phoenix6.signals.InvertedValue;
 
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.GlobalConstants.RobotMode;
 
 
 public class ElevatorIOReal implements ElevatorIO {
@@ -23,17 +29,24 @@ public class ElevatorIOReal implements ElevatorIO {
  
     private ProfiledPIDController pidController;
     private ElevatorFeedforward ffcontroller;
+    private DigitalInput limitSwitch;
 
     private double metersPerRotation;
     private double leftMotorVoltage;
     private double rightMotorVoltage;
+    private boolean leftMotorZeroed;
+    private boolean rightMotorZeroed;
 
     public ElevatorIOReal() {
-        leftMotor = new TalonFX(12);
-        rightMotor = new TalonFX(13);
+        leftMotor = new TalonFX(LEFT_MOTOR_CANID);
+        rightMotor = new TalonFX(RIGHT_MOTOR_CANID);
+        limitSwitch = new DigitalInput(LIMIT_SWITCH_DIO);
 
         leftMotorVoltage = 0;
         rightMotorVoltage = 0;
+        leftMotorZeroed = false;
+        rightMotorZeroed = false;
+        metersPerRotation = METERS_PER_ROTATION.magnitude();
 
         //Motor configs
         leftConfigurator = leftMotor.getConfigurator();
@@ -42,27 +55,31 @@ public class ElevatorIOReal implements ElevatorIO {
         leftConfigurations = new TalonFXConfiguration();
         rightConfigurations = new TalonFXConfiguration();
 
-        leftConfigurations.MotorOutput.Inverted = ElevatorConstants.Real.LEFT_INVERTED ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
-        leftConfigurations.MotorOutput.NeutralMode = ElevatorConstants.Real.LEFT_NEUTRAL_MODE;
-        leftConfigurations.CurrentLimits.StatorCurrentLimitEnable = ElevatorConstants.Real.LEFT_STRATOR_CURRENT_LIMIT_ENABLED;
-        leftConfigurations.CurrentLimits.StatorCurrentLimit = ElevatorConstants.Real.LEFT_STRATOR_CURRENT_LIMIT.magnitude();
+        leftConfigurations.MotorOutput.Inverted = LEFT_INVERTED ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+        leftConfigurations.MotorOutput.NeutralMode = LEFT_NEUTRAL_MODE;
+        leftConfigurations.CurrentLimits.StatorCurrentLimitEnable = LEFT_STRATOR_CURRENT_LIMIT_ENABLED;
+        leftConfigurations.CurrentLimits.StatorCurrentLimit = LEFT_STRATOR_CURRENT_LIMIT.magnitude();
         leftConfigurator.apply(leftConfigurations);
 
-        rightConfigurations.MotorOutput.Inverted = ElevatorConstants.Real.RIGHT_INVERTED ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
-        rightConfigurations.MotorOutput.NeutralMode = ElevatorConstants.Real.RIGHT_NEUTRAL_MODE;
-        rightConfigurations.CurrentLimits.StatorCurrentLimitEnable = ElevatorConstants.Real.RIGHT_STRATOR_CURRENT_LIMIT_ENABLED;
-        rightConfigurations.CurrentLimits.StatorCurrentLimit = ElevatorConstants.Real.RIGHT_STRATOR_CURRENT_LIMIT.magnitude();
+        rightConfigurations.MotorOutput.Inverted = RIGHT_INVERTED ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+        rightConfigurations.MotorOutput.NeutralMode = RIGHT_NEUTRAL_MODE;
+        rightConfigurations.CurrentLimits.StatorCurrentLimitEnable = RIGHT_STRATOR_CURRENT_LIMIT_ENABLED;
+        rightConfigurations.CurrentLimits.StatorCurrentLimit = RIGHT_STRATOR_CURRENT_LIMIT.magnitude();
         rightConfigurator.apply(rightConfigurations);
 
         //PID and FF controller setup
-        pidController = new ProfiledPIDController(ElevatorConstants.Real.PROFILLED_PID_CONSTANTS.kP, ElevatorConstants.Real.PROFILLED_PID_CONSTANTS.kI,
-        ElevatorConstants.Real.PROFILLED_PID_CONSTANTS.kD, ElevatorConstants.TRAPEZOID_PROFILE_CONSTRAINTS);
-        pidController.setTolerance(ElevatorConstants.POSITION_TOLERANCE, ElevatorConstants.VELOCITY_TOLERANCE);
-        pidController.setIZone(ElevatorConstants.Real.PROFILLED_PID_CONSTANTS.iZone);
+        pidController = new ProfiledPIDController(PROFILLED_PID_CONSTANTS.kP, PROFILLED_PID_CONSTANTS.kI,
+        PROFILLED_PID_CONSTANTS.kD, ElevatorConstants.TRAPEZOID_PROFILE_CONSTRAINTS);
+        pidController.setTolerance(ElevatorConstants.POSITION_TOLERANCE.magnitude(), ElevatorConstants.VELOCITY_TOLERANCE.magnitude());
+        pidController.setIZone(PROFILLED_PID_CONSTANTS.iZone);
 
-        ffcontroller = new ElevatorFeedforward(ElevatorConstants.Real.FF_CONSTANTS.kS,
-        ElevatorConstants.Real.FF_CONSTANTS.kG, ElevatorConstants.Real.FF_CONSTANTS.kV,
-        ElevatorConstants.Real.FF_CONSTANTS.kA);
+        ffcontroller = new ElevatorFeedforward(FF_CONSTANTS.kS,
+        FF_CONSTANTS.kG, FF_CONSTANTS.kV,
+        FF_CONSTANTS.kA);
+
+        if (ROBOT_MODE == RobotMode.TESTING) {
+            SmartDashboard.putData("Elevator PID controller", pidController);
+        }
     }
 
     @Override
@@ -95,6 +112,30 @@ public class ElevatorIOReal implements ElevatorIO {
     @Override
     public boolean nearTarget() {
         return pidController.atGoal();
+    }
+
+    @Override
+    public void zero() {
+        double leftZeroingSpeed = -ElevatorConstants.ZEROING_VELOCITY.magnitude();
+        double rightZeroingSpeed = -ElevatorConstants.ZEROING_VELOCITY.magnitude();
+
+        if (rightMotor.getStatorCurrent().getValueAsDouble() > ElevatorConstants.ZEROING_CURRENT_LIMIT.magnitude() || !limitSwitch.get()) {
+            rightZeroingSpeed = 0;
+            if (!rightMotorZeroed) rightMotor.setPosition(0); rightMotorZeroed = true;
+        }
+
+        if (leftMotor.getStatorCurrent().getValueAsDouble() > ElevatorConstants.ZEROING_CURRENT_LIMIT.magnitude() || !limitSwitch.get()) {
+            leftZeroingSpeed = 0;
+            if (!leftMotorZeroed) leftMotor.setPosition(0); leftMotorZeroed = true;
+        }
+
+        rightMotor.set(rightZeroingSpeed);
+        leftMotor.set(leftZeroingSpeed);
+    }
+
+    @Override
+    public boolean isZeroed() {
+        return leftMotorZeroed && rightMotorZeroed;
     }
     
 }

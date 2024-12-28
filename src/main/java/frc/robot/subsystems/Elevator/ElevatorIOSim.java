@@ -1,45 +1,63 @@
 package frc.robot.subsystems.Elevator;
 
 import static edu.wpi.first.units.Units.MetersPerSecond;
+import static frc.robot.subsystems.Elevator.ElevatorConstants.Sim.*;
+import static frc.robot.subsystems.Elevator.ElevatorConstants.*;
+
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.sim.TalonFXSimState;
 
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.GlobalConstants;
 
 public class ElevatorIOSim implements ElevatorIO{
 
     private ProfiledPIDController pidController;
     private ElevatorFeedforward ffcontroller;
+    private ElevatorSim elevatorSim;
+
+    private TalonFX leftMotor;
+    private TalonFX rightMotor;
+    private TalonFXSimState leftMotorSim;
+    private TalonFXSimState rightMotorSim;
 
     private double appliedVoltage;
-
-    private ElevatorSim elevatorSim;
+    private boolean zeroed;
+    public double metersPerRotation;
 
 
     public ElevatorIOSim() {
-        elevatorSim = new ElevatorSim(ElevatorConstants.Sim.GEARBOX, ElevatorConstants.Sim.GEARING,
-        ElevatorConstants.Sim.CARRIAGE_MASS.magnitude(), ElevatorConstants.Sim.DRUM_RADIUS.magnitude(),
-        ElevatorConstants.Sim.MIN_HEIGHT.magnitude(), ElevatorConstants.Sim.MAX_HEIGHT.magnitude(),
-        ElevatorConstants.Sim.SIMULATE_GRAVITY, ElevatorConstants.Sim.STARTING_HEIGHT.magnitude());
+        elevatorSim = new ElevatorSim(GEARBOX, GEARING,
+        CARRIAGE_MASS.magnitude(), DRUM_RADIUS.magnitude(),
+        MIN_HEIGHT.magnitude(), MAX_HEIGHT.magnitude(),
+        SIMULATE_GRAVITY, STARTING_HEIGHT.magnitude());
 
-        pidController = new ProfiledPIDController(ElevatorConstants.Sim.PROFILLED_PID_CONSTANTS.kP,
-        ElevatorConstants.Sim.PROFILLED_PID_CONSTANTS.kI,
-        ElevatorConstants.Sim.PROFILLED_PID_CONSTANTS.kD,
+        pidController = new ProfiledPIDController(PROFILLED_PID_CONSTANTS.kP,
+        PROFILLED_PID_CONSTANTS.kI,
+        PROFILLED_PID_CONSTANTS.kD,
         ElevatorConstants.TRAPEZOID_PROFILE_CONSTRAINTS);
-        pidController.setTolerance(ElevatorConstants.POSITION_TOLERANCE, ElevatorConstants.VELOCITY_TOLERANCE);
-        pidController.setIZone(ElevatorConstants.Sim.PROFILLED_PID_CONSTANTS.iZone);
+        pidController.setTolerance(ElevatorConstants.POSITION_TOLERANCE.magnitude(), ElevatorConstants.VELOCITY_TOLERANCE.magnitude());
+        pidController.setIZone(PROFILLED_PID_CONSTANTS.iZone);
 
-        ffcontroller = new ElevatorFeedforward(ElevatorConstants.Sim.FF_CONSTANTS.kS,
-        ElevatorConstants.Sim.FF_CONSTANTS.kG,
-        ElevatorConstants.Sim.FF_CONSTANTS.kV,
-        ElevatorConstants.Sim.FF_CONSTANTS.kA);
+        ffcontroller = new ElevatorFeedforward(FF_CONSTANTS.kS,
+        FF_CONSTANTS.kG,
+        FF_CONSTANTS.kV,
+        FF_CONSTANTS.kA);
+        zeroed = false;
 
+        leftMotor = new TalonFX(LEFT_MOTOR_CANID);
+        rightMotor = new TalonFX(RIGHT_MOTOR_CANID);
+        leftMotorSim = leftMotor.getSimState();
+        rightMotorSim = rightMotor.getSimState();
+
+        metersPerRotation = METERS_PER_ROTATION.magnitude();
     }
 
     public void updateInputs(ElevatorIOInputs inputs) {
-        elevatorSim.update(0.02); // adding this to global constants once this exists.
+        elevatorSim.update(GlobalConstants.SIM_DELTA_TIME);
 
         inputs.currentElevatorHeight = elevatorSim.getPositionMeters();
         inputs.elevatorHeightSetpoint = pidController.getSetpoint().position;
@@ -51,6 +69,12 @@ public class ElevatorIOSim implements ElevatorIO{
 
         inputs.leftMotorVoltInput = appliedVoltage;
         inputs.rightMotorVoltInput = appliedVoltage;
+        inputs.elevatorZeroed = zeroed;
+
+        leftMotorSim.setRawRotorPosition(elevatorSim.getPositionMeters() / metersPerRotation);
+        leftMotorSim.setRotorVelocity(elevatorSim.getVelocityMetersPerSecond() / metersPerRotation);
+        rightMotorSim.setRawRotorPosition(-elevatorSim.getPositionMeters() / metersPerRotation); // negative bc right is inversed (probably)
+        rightMotorSim.setRotorVelocity(-elevatorSim.getVelocityMetersPerSecond() / metersPerRotation);
         
         SmartDashboard.putData("Elevator PID", pidController);
     }
@@ -69,6 +93,16 @@ public class ElevatorIOSim implements ElevatorIO{
     @Override
     public boolean nearTarget() {
         return pidController.atGoal();
+    }
+
+    @Override
+    public void zero() {
+        zeroed = true;
+    }
+
+    @Override
+    public boolean isZeroed() {
+        return zeroed;
     }
     
 }

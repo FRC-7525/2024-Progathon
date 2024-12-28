@@ -3,6 +3,7 @@ package frc.robot.subsystems.Elevator;
 import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Kilogram;
 import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.pathplanner.lib.config.PIDConstants;
@@ -12,19 +13,24 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Mass;
 import frc.robot.pioneersLib.controlConstants.FFConstants;
 
 public final class ElevatorConstants {
+    public static final int LEFT_MOTOR_CANID = 12;
+    public static final int RIGHT_MOTOR_CANID = 13;
     
-    public static final double POSITION_TOLERANCE = 0;
-    public static final double VELOCITY_TOLERANCE = 0;
+    public static final Distance POSITION_TOLERANCE = Meters.of(.1);
+    public static final LinearVelocity VELOCITY_TOLERANCE = MetersPerSecond.of(.1);
     public static final Constraints TRAPEZOID_PROFILE_CONSTRAINTS = new TrapezoidProfile.Constraints(1, .5);
-    
-    //more random values
-    public static final Distance HIGH_POSITION_HEIGHT = Meters.of(1.4);
-    public static final Distance MID_POSITION_HEIGHT = Meters.of(.5);
+    public static final LinearVelocity ZEROING_VELOCITY = MetersPerSecond.of(0.25);
+    public static final Current ZEROING_CURRENT_LIMIT = Amps.of(10.0);
+
+    public static final Distance HIGH_POSITION_HEIGHT = Meters.of(2.5146);
+    public static final Distance MID_POSITION_HEIGHT = Meters.of(0); //mid is all the way down according to nick
     public static final Distance IDLE_POSITION_HEIGHT = Meters.of(0);
+    public static final Distance METERS_PER_ROTATION = Meters.of(1); // random value lol
 
     public static class Sim {
         public static final DCMotor GEARBOX = DCMotor.getKrakenX60(2);
@@ -43,8 +49,8 @@ public final class ElevatorConstants {
     }
 
     public static class Real {
-            public static final int LEFT_MOTOR_CANID = 12;
-            public static final int RIGHT_MOTOR_CANID = 13;
+            public static final int LIMIT_SWITCH_DIO = 1;
+
 
             public static final boolean LEFT_INVERTED = false;
             public static final NeutralModeValue LEFT_NEUTRAL_MODE = NeutralModeValue.Coast;

@@ -31,8 +31,12 @@ public class Elevator extends Subsystem<ElevatorStates> {
 
     @Override
     protected void runState() {
-        io.setHeightGoalpoint(getState().getTargetHeight());
-        io.runElevator();
+        if (!io.isZeroed()) {
+            io.zero();
+        } else {
+            io.setHeightGoalpoint(getState().getTargetHeight());
+            io.runElevator();
+        }
         
         io.updateInputs(inputs);
         Logger.processInputs("Elevator", inputs);

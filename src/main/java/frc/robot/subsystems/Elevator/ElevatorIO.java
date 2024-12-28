@@ -14,6 +14,7 @@ public interface ElevatorIO {
         public double elevatorVelocityGoalpoint;
         public double leftMotorVoltInput;
         public double rightMotorVoltInput;
+        public boolean elevatorZeroed;
     }
 
     public void setHeightGoalpoint(double height);
@@ -21,6 +22,10 @@ public interface ElevatorIO {
     public void updateInputs(ElevatorIOInputs inputs);
 
     public void runElevator();
+
+    public void zero();
+
+    public boolean isZeroed();
     
     public boolean nearTarget();
 }
