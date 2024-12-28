@@ -1,6 +1,7 @@
 package frc.robot.subsystems.Elevator;
 
 import static frc.robot.GlobalConstants.ROBOT_MODE;
+import static frc.robot.subsystems.Elevator.ElevatorConstants.SUBSYSTEM_NAME;
 
 import org.littletonrobotics.junction.Logger;
 import frc.robot.pioneersLib.subsystem.Subsystem;
@@ -12,7 +13,7 @@ public class Elevator extends Subsystem<ElevatorStates> {
     private ElevatorIOInputsAutoLogged inputs;
 
     private Elevator() {
-        super("Elevator", ElevatorStates.IDLE);
+        super(SUBSYSTEM_NAME, ElevatorStates.IDLE);
         this.io = switch (ROBOT_MODE) {
             case SIM -> new ElevatorIOSim();
             case REAL -> new ElevatorIOReal();
@@ -39,8 +40,7 @@ public class Elevator extends Subsystem<ElevatorStates> {
         }
         
         io.updateInputs(inputs);
-        // Logger.recordOutput("Elevator State", getState());
-        Logger.processInputs("Elevator", inputs);
+        Logger.processInputs(ElevatorConstants.SUBSYSTEM_NAME, inputs);
     }
     
 }

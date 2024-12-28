@@ -18,6 +18,8 @@ import edu.wpi.first.units.measure.Mass;
 import frc.robot.pioneersLib.controlConstants.FFConstants;
 
 public final class ElevatorConstants {
+    public static final String SUBSYSTEM_NAME = "Elevator";
+
     public static final int LEFT_MOTOR_CANID = 12;
     public static final int RIGHT_MOTOR_CANID = 13;
     
@@ -53,12 +55,12 @@ public final class ElevatorConstants {
 
 
             public static final boolean LEFT_INVERTED = false;
-            public static final NeutralModeValue LEFT_NEUTRAL_MODE = NeutralModeValue.Coast;
+            public static final NeutralModeValue LEFT_NEUTRAL_MODE = NeutralModeValue.Brake;
             public static final boolean LEFT_STRATOR_CURRENT_LIMIT_ENABLED = true;
             public static final Current LEFT_STRATOR_CURRENT_LIMIT = Amps.of(30);
 
             public static final boolean RIGHT_INVERTED = false;
-            public static final NeutralModeValue RIGHT_NEUTRAL_MODE = NeutralModeValue.Coast;
+            public static final NeutralModeValue RIGHT_NEUTRAL_MODE = NeutralModeValue.Brake;
             public static final boolean RIGHT_STRATOR_CURRENT_LIMIT_ENABLED = true;
             public static final Current RIGHT_STRATOR_CURRENT_LIMIT = Amps.of(30);
 
