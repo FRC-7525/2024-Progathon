@@ -4,7 +4,9 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ElevatorIOSim implements ElevatorIO{
 
@@ -49,6 +51,8 @@ public class ElevatorIOSim implements ElevatorIO{
 
         inputs.leftMotorVoltInput = appliedVoltage;
         inputs.rightMotorVoltInput = appliedVoltage;
+        
+        SmartDashboard.putData("Elevator PID", pidController);
     }
 
     @Override
