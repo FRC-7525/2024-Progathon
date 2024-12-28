@@ -6,7 +6,7 @@ import frc.robot.subsystems.Intake.IntakeStates;
 
 public enum ManagerStates implements SubsystemStates {
     IDLE("Idle", ElevatorStates.IDLE, IntakeStates.IDLE),
-    INTAKING("INTAKING", ElevatorStates.IDLE, IntakeStates.INTAKING));
+    INTAKING("INTAKING", ElevatorStates.IDLE, IntakeStates.INTAKING),
     SCORING_HIGH("SCORING HIGH", ElevatorStates.HIGH, IntakeStates.IDLE);
     
     ManagerStates(String stateString, ElevatorStates elevatorState, IntakeStates intakeState) {
@@ -25,7 +25,7 @@ public enum ManagerStates implements SubsystemStates {
     }
     protected ElevatorStates getElevatorState() {
         return elevatorState;
-  
+    }
     protected IntakeStates getIntakeState() {
         return intakeState;
     }
