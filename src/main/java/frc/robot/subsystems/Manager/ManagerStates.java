@@ -20,7 +20,7 @@ public enum ManagerStates implements SubsystemStates {
         return stateString;
     }
 
-    public IntakeStates getIntakeState() {
+    protected IntakeStates getIntakeState() {
         return intakeState;
     }
 }

@@ -3,6 +3,9 @@ package frc.robot.subsystems.Intake;
 
 import static frc.robot.GlobalConstants.SIM_DELTA_TIME;
 
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.sim.TalonFXSimState;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
@@ -11,6 +14,11 @@ import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 
 public class IntakeIOSim implements IntakeIO {
+    private TalonFX pivotMotor;
+    private TalonFX wheelMotor;
+    private TalonFXSimState pivotMotorTalonSim;
+    private TalonFXSimState wheelMotorTalonSim;
+
     private SingleJointedArmSim pivotSim;
     private DCMotorSim wheelMotorSim;
     private PIDController pivotController;
@@ -20,6 +28,11 @@ public class IntakeIOSim implements IntakeIO {
     private double pivotPositionSetpoint;
 
     IntakeIOSim() {
+        wheelMotor = new TalonFX(IntakeConstants.Real.WHEEL_MOTOR_CANID);
+        pivotMotor = new TalonFX(IntakeConstants.Real.PIVOT_MOTOR_CANID);
+        wheelMotorTalonSim = wheelMotor.getSimState();
+        pivotMotorTalonSim = pivotMotor.getSimState();
+
         pivotSim = new SingleJointedArmSim(DCMotor.getKrakenX60(IntakeConstants.Sim.NUM_PIVOT_MOTORS),
         IntakeConstants.Sim.PIVOT_GEARING, IntakeConstants.Sim.PIVOT_MOI.magnitude(), IntakeConstants.Sim.PIVOT_ARM_LENGTH.magnitude(),
         Units.degreesToRadians(IntakeConstants.Sim.MIN_PIVOT_ANGLE.magnitude()),
@@ -48,6 +61,9 @@ public class IntakeIOSim implements IntakeIO {
         input.wheelSpeedSetpoint = wheelSpeedSetpoint;
         input.pivotPosition = Units.radiansToDegrees(pivotSim.getAngleRads());
         input.pivotSetpoint = pivotPositionSetpoint;
+
+        wheelMotorTalonSim.setRawRotorPosition(wheelMotorSim.getAngularPosition());
+        wheelMotorTalonSim.setRotorVelocity(wheelMotorSim.getAngularVelocity());
     }
 
     @Override
