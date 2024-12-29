@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: write
@@ -16,7 +19,7 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-      
+
       - name: Pull latest changes
         run: |
           if [ "${GITHUB_EVENT_NAME}" == "pull_request" ]; then
