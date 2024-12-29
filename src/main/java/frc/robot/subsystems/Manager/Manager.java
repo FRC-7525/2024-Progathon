@@ -64,7 +64,7 @@ public class Manager extends Subsystem<ManagerStates> {
         addTrigger(ManagerStates.GOING_MID, ManagerStates.SCORING_MID, () -> elevator.nearTarget());
 
         //SCORING MID
-        addTrigger(ManagerStates.GOING_MID, ManagerStates.IDLE, () -> Controllers.OPERATOR_CONTROLLER.getAButtonPressed() || indexer.isEmpty());
+        addTrigger(ManagerStates.SCORING_MID, ManagerStates.IDLE, () -> Controllers.OPERATOR_CONTROLLER.getAButtonPressed() || indexer.isEmpty());
     }
 
     public static Manager getInstance() {
@@ -79,13 +79,19 @@ public class Manager extends Subsystem<ManagerStates> {
         Logger.recordOutput("Manager/State", getState().getStateString());
         Logger.recordOutput("Manager/State Time", getStateTime());
 
+        if(Controllers.OPERATOR_CONTROLLER.getXButtonPressed()) {
+            setState(ManagerStates.IDLE);
+        }
+
         elevator.setState(getState().getElevatorState());
         intake.setState(getState().getIntakeState());
+        indexer.setState(getState().getIndexerState());
 
         drive.periodic();
         vision.periodic();
         elevator.periodic();
         intake.periodic();
+        indexer.periodic();
 
         // Other subsystem periodics go here
     }

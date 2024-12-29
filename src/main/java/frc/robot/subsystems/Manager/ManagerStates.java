@@ -36,7 +36,7 @@ public enum ManagerStates implements SubsystemStates {
     protected IntakeStates getIntakeState() {
         return intakeState;
     }
-    protected IndexerStates getIndexerStates() {
+    protected IndexerStates getIndexerState() {
         return indexerState;
     }
 }

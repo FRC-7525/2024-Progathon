@@ -18,7 +18,7 @@ public class IndexerIOSim implements IndexerIO {
     private boolean[] beamBreakArray = {false, false, false, false, false, false};
 
     public IndexerIOSim() {
-        wheelMotorSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX60(1), 0.000001, 1), DCMotor.getKrakenX60Foc(IndexerConstants.NUM_SPINNER_MOTORS), 0);
+        wheelMotorSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX60(1), 0.000001, 1), DCMotor.getKrakenX60Foc(IndexerConstants.NUM_SPINNER_MOTORS));
 
         speedController = new PIDController(0, 0, 0);
     }
