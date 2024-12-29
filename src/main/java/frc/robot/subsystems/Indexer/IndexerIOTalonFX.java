@@ -2,95 +2,98 @@ package frc.robot.subsystems.Indexer;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.pathplanner.lib.config.PIDConstants;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 public class IndexerIOTalonFX implements IndexerIO {
-    private TalonFX wheelMotor;
 
-    private PIDController speedController;
+	private TalonFX wheelMotor;
 
-    private double wheelAppliedVoltage;
-    private double wheelSpeedpoint;
+	private PIDController speedController;
 
-    private DigitalInput[] beamBreaks;
-    private Debouncer[] beamBreakDebouncers;
+	private double wheelAppliedVoltage;
+	private double wheelSpeedpoint;
 
-    private int currentNumOfPieces;
-    private int formerNumOfPieces;
+	private DigitalInput[] beamBreaks;
+	private Debouncer[] beamBreakDebouncers;
 
-    public IndexerIOTalonFX() {
-        currentNumOfPieces = 0;        
-        formerNumOfPieces = 0;
+	private int currentNumOfPieces;
+	private int formerNumOfPieces;
 
-        wheelMotor = new TalonFX(IndexerConstants.SPINNER_ID);
+	public IndexerIOTalonFX() {
+		currentNumOfPieces = 0;
+		formerNumOfPieces = 0;
 
-        speedController = new PIDController(0, 0, 0);
+		wheelMotor = new TalonFX(IndexerConstants.SPINNER_ID);
 
-        beamBreaks = new DigitalInput[6];
-        for (int i = 0; i < 6; i++) {
-            beamBreaks[i] = new DigitalInput(IndexerConstants.BEAM_BREAK_PORTS[i]);
-            beamBreakDebouncers[i] = new Debouncer(
-                IndexerConstants.DEBOUNCE_TIME,
-                DebounceType.kBoth
-            );
-        }
-    }
+		speedController = new PIDController(0, 0, 0);
 
-    @Override
-    public void setSetpoint(double setpoint) {
-        wheelAppliedVoltage = speedController.calculate(wheelMotor.getVelocity().getValueAsDouble(), setpoint);
-        wheelSpeedpoint = setpoint;
+		beamBreaks = new DigitalInput[6];
+		for (int i = 0; i < 6; i++) {
+			beamBreaks[i] = new DigitalInput(IndexerConstants.BEAM_BREAK_PORTS[i]);
+			beamBreakDebouncers[i] = new Debouncer(
+				IndexerConstants.DEBOUNCE_TIME,
+				DebounceType.kBoth
+			);
+		}
+	}
 
-        wheelMotor.setVoltage(wheelAppliedVoltage);
-    } 
+	@Override
+	public void setSetpoint(double setpoint) {
+		wheelAppliedVoltage = speedController.calculate(
+			wheelMotor.getVelocity().getValueAsDouble(),
+			setpoint
+		);
+		wheelSpeedpoint = setpoint;
 
-    @Override
-    public void updateInputs(IndexerIOInputs inputs) {
-        inputs.wheelSetpoint = wheelSpeedpoint;
-        inputs.wheelSpeed = wheelMotor.getVelocity().getValueAsDouble();
+		wheelMotor.setVoltage(wheelAppliedVoltage);
+	}
 
-        for (int i = 0; i < 6; i++) {
-            inputs.beamBreakArray[i] = !beamBreakDebouncers[i].calculate(beamBreaks[i].get());
-        }
-    }
+	@Override
+	public void updateInputs(IndexerIOInputs inputs) {
+		inputs.wheelSetpoint = wheelSpeedpoint;
+		inputs.wheelSpeed = wheelMotor.getVelocity().getValueAsDouble();
 
-    @Override
-    public void stop() {
-        wheelAppliedVoltage = 0;
-        wheelMotor.setVoltage(0);
-    }
+		for (int i = 0; i < 6; i++) {
+			inputs.beamBreakArray[i] = !beamBreakDebouncers[i].calculate(beamBreaks[i].get());
+		}
+	}
 
-    @Override
-    public double getSpeed() {
-        return wheelMotor.getVelocity().getValueAsDouble();
-    }
+	@Override
+	public void stop() {
+		wheelAppliedVoltage = 0;
+		wheelMotor.setVoltage(0);
+	}
 
-    @Override
-    public void configurePID(PIDConstants constants) {
-        speedController = new PIDController(constants.kP, constants.kI, constants.kD);
-    }
+	@Override
+	public double getSpeed() {
+		return wheelMotor.getVelocity().getValueAsDouble();
+	}
 
-    @Override
-    public int getNumberOfPieces() {
-        for (int i = 0; i < 6; i++) {
-            if (beamBreakDebouncers[i].calculate(beamBreaks[i].get())) {
-                currentNumOfPieces = i;
-                return i;
-            }
-        }
+	@Override
+	public void configurePID(PIDConstants constants) {
+		speedController = new PIDController(constants.kP, constants.kI, constants.kD);
+	}
 
-        return 0;
-    }
+	@Override
+	public int getNumberOfPieces() {
+		for (int i = 0; i < 6; i++) {
+			if (beamBreakDebouncers[i].calculate(beamBreaks[i].get())) {
+				currentNumOfPieces = i;
+				return i;
+			}
+		}
 
-    @Override
-    public boolean nextSensorTriggered() {
-        boolean triggered = formerNumOfPieces != currentNumOfPieces;
-        formerNumOfPieces = currentNumOfPieces;
+		return 0;
+	}
 
-        return triggered;
-    }
+	@Override
+	public boolean nextSensorTriggered() {
+		boolean triggered = formerNumOfPieces != currentNumOfPieces;
+		formerNumOfPieces = currentNumOfPieces;
+
+		return triggered;
+	}
 }

@@ -1,51 +1,52 @@
 package frc.robot.subsystems.Indexer;
 
-import org.littletonrobotics.junction.Logger;
-
 import frc.robot.GlobalConstants;
 import frc.robot.pioneersLib.subsystem.Subsystem;
+import org.littletonrobotics.junction.Logger;
 
 public class Indexer extends Subsystem<IndexerStates> {
-    private IndexerIO io;
-    private IndexerIOInputsAutoLogged inputs;
 
-    public Indexer(IndexerIO io) {
-        super("Indexer", IndexerStates.OFF);
+	private IndexerIO io;
+	private IndexerIOInputsAutoLogged inputs;
 
-        this.io = io;
+	public Indexer(IndexerIO io) {
+		super("Indexer", IndexerStates.OFF);
+		this.io = io;
 
-        addTrigger(IndexerStates.AUTONOMOUS_OFF, IndexerStates.AUTONOMOUS_ON, () -> io.nextSensorTriggered());
-        addTrigger(IndexerStates.AUTONOMOUS_ON, IndexerStates.AUTONOMOUS_OFF, () -> true); //TODO: actually get intake beam break
+		addTrigger(IndexerStates.AUTONOMOUS_OFF, IndexerStates.AUTONOMOUS_ON, () ->
+			io.nextSensorTriggered()
+		);
+		addTrigger(IndexerStates.AUTONOMOUS_ON, IndexerStates.AUTONOMOUS_OFF, () -> true); //TODO: actually get intake beam break
 
-        switch (GlobalConstants.ROBOT_MODE) { 
-            case REAL:
-                break;
-            case SIM:
-                break;
-            default:
-                break;
-        }
-    }
+		switch (GlobalConstants.ROBOT_MODE) {
+			case REAL:
+				break;
+			case SIM:
+				break;
+			default:
+				break;
+		}
+	}
 
-    protected void runState() {
-        io.setSetpoint(getState().getSetPoint());
-    }
+	protected void runState() {
+		io.setSetpoint(getState().getSetPoint());
+	}
 
-    public void stop() {
-        io.stop();
-    }
+	public void stop() {
+		io.stop();
+	}
 
-    @Override
-    public void periodic() {
-       super.periodic();
+	@Override
+	public void periodic() {
+		super.periodic();
 
-       //TODO: Add output managing
+		//TODO: Add output managing
 
-        Logger.processInputs("Indexer", inputs);
-        io.updateInputs(inputs);
-    }
+		Logger.processInputs("Indexer", inputs);
+		io.updateInputs(inputs);
+	}
 
-    public int getNumberOfPieces() {
-        return io.getNumberOfPieces();
-    }
+	public int getNumberOfPieces() {
+		return io.getNumberOfPieces();
+	}
 }

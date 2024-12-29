@@ -17,6 +17,6 @@ public class RunnableTrigger {
 	}
 
 	public void run() {
-        runnable.run();
-    }
+		runnable.run();
+	}
 }
