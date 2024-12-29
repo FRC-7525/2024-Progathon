@@ -40,7 +40,7 @@ public class Manager extends Subsystem<ManagerStates> {
             addRunnableTrigger(() -> {commandScheduler.schedule(sysIdSubsystem.sysIdQuasistatic(Direction.kForward));}, () -> TEST_CONTROLLER.getXButtonPressed());
             addRunnableTrigger(() -> {commandScheduler.schedule(sysIdSubsystem.sysIdQuasistatic(Direction.kReverse));}, () -> TEST_CONTROLLER.getYButtonPressed());
         }
-        //From idle
+        // From idle
         addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING, () -> Controllers.DRIVER_CONTROLLER.getBButtonPressed());
         addTrigger(ManagerStates.IDLE, ManagerStates.OUTTAKING, () -> Controllers.DRIVER_CONTROLLER.getAButtonPressed());
         addTrigger(ManagerStates.IDLE, ManagerStates.GOING_HIGH, () -> Controllers.DRIVER_CONTROLLER.getRightTriggerAxis() > Controllers.TRIGGERS_REGISTER_POINT);
@@ -54,16 +54,16 @@ public class Manager extends Subsystem<ManagerStates> {
         addTrigger(ManagerStates.OUTTAKING, ManagerStates.IDLE, () -> Controllers.DRIVER_CONTROLLER.getAButtonPressed());
         addTrigger(ManagerStates.OUTTAKING, ManagerStates.INTAKING, () -> Controllers.DRIVER_CONTROLLER.getYButtonPressed());
 
-        //GOING HIGH
+        //form going high
         addTrigger(ManagerStates.GOING_HIGH, ManagerStates.SCORING_HIGH, () -> elevator.nearTarget());
 
-        //SCORING HIGH
+        //from scoring high
         addTrigger(ManagerStates.SCORING_HIGH, ManagerStates.IDLE, () -> Controllers.OPERATOR_CONTROLLER.getAButtonPressed() || indexer.isEmpty());
 
-        //GOING MID
+        //from going mid
         addTrigger(ManagerStates.GOING_MID, ManagerStates.SCORING_MID, () -> elevator.nearTarget());
 
-        //SCORING MID
+        //from scoring mid
         addTrigger(ManagerStates.SCORING_MID, ManagerStates.IDLE, () -> Controllers.OPERATOR_CONTROLLER.getAButtonPressed() || indexer.isEmpty());
     }
 
@@ -79,7 +79,7 @@ public class Manager extends Subsystem<ManagerStates> {
         Logger.recordOutput("Manager/State", getState().getStateString());
         Logger.recordOutput("Manager/State Time", getStateTime());
 
-        if(Controllers.OPERATOR_CONTROLLER.getXButtonPressed()) {
+        if (Controllers.OPERATOR_CONTROLLER.getXButtonPressed()) {
             setState(ManagerStates.IDLE);
         }
 
