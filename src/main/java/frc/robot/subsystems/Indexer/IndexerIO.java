@@ -1,6 +1,6 @@
 package frc.robot.subsystems.Indexer;
 
-import static frc.robot.subsystems.Indexer.IndexerConstants.*;
+import org.littletonrobotics.junction.AutoLog;
 
 import com.pathplanner.lib.config.PIDConstants;
 

@@ -1,7 +1,5 @@
 package frc.robot.subsystems.Indexer;
 
-import static frc.robot.subsystems.Indexer.IndexerConstants.*;
-
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.pathplanner.lib.config.PIDConstants;
 import edu.wpi.first.math.controller.PIDController;
