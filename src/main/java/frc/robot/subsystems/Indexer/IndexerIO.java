@@ -1,14 +1,13 @@
 package frc.robot.subsystems.Indexer;
 
-import org.littletonrobotics.junction.AutoLog;
-
 import com.pathplanner.lib.config.PIDConstants;
+import org.littletonrobotics.junction.AutoLog;
 
 public interface IndexerIO {
 	@AutoLog
 	public static class IndexerIOInputs {
 
-    public boolean[] beamBreakArray = new boolean[IndexerConstants.NUM_BEAM_BREAK];
+		public boolean[] beamBreakArray = new boolean[IndexerConstants.NUM_BEAM_BREAK];
 		public double wheelSpeed;
 		public double wheelSetpoint;
 	}
