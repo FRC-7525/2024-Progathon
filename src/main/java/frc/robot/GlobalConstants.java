@@ -31,6 +31,7 @@ public final class GlobalConstants {
 		? RobotMode.SIM
 		: RobotMode.SIM;
 	public static final double SIM_DELTA_TIME = 0.02;
+	public static final int MAX_PIECES = 6;
 
 	public static class Controllers {
 
@@ -40,6 +41,7 @@ public final class GlobalConstants {
 
 		// NOTE: Set to 0.1 on trash controllers
 		public static final double DEADBAND = 0.01;
+		public static final double TRIGGERS_REGISTER_POINT = 0.5;
 	}
 
 	public static class Drive {

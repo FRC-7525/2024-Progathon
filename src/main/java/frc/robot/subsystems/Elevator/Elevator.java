@@ -43,4 +43,8 @@ public class Elevator extends Subsystem<ElevatorStates> {
 		io.updateInputs(inputs);
 		Logger.processInputs(ElevatorConstants.SUBSYSTEM_NAME, inputs);
 	}
+
+	public boolean nearTarget() {
+		return io.nearTarget();
+	}
 }

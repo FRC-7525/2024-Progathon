@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.pioneersLib.subsystem.Subsystem;
 import frc.robot.subsystems.Drive.Drive;
 import frc.robot.subsystems.Elevator.Elevator;
-import frc.robot.subsystems.Elevator.ElevatorStates;
+import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Vision.Vision;
 import org.littletonrobotics.junction.Logger;
@@ -22,6 +22,7 @@ public class Manager extends Subsystem<ManagerStates> {
 	private final Elevator elevator = Elevator.getInstance();
 	private final CommandScheduler commandScheduler = CommandScheduler.getInstance();
 	private final Intake intake = Intake.getInstance();
+	private final Indexer indexer = Indexer.getInstance();
 	// Change to change the subsystem that gets tested (has runnable sysID tests) saftey ish
 	private final Subsystem<?> sysIdSubsystem = drive;
 
@@ -56,18 +57,74 @@ public class Manager extends Subsystem<ManagerStates> {
 				() -> TEST_CONTROLLER.getYButtonPressed()
 			);
 		}
-		addTrigger(ManagerStates.IDLE, ManagerStates.SCORING_HIGH, () ->
-			Controllers.DRIVER_CONTROLLER.getXButtonPressed()
+		// from idle
+		addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING, () ->
+			Controllers.DRIVER_CONTROLLER.getBButtonPressed()
 		);
-		addTrigger(ManagerStates.SCORING_HIGH, ManagerStates.IDLE, () ->
-			Controllers.DRIVER_CONTROLLER.getXButtonPressed()
+		addTrigger(ManagerStates.IDLE, ManagerStates.OUTTAKING, () ->
+			Controllers.DRIVER_CONTROLLER.getAButtonPressed()
+		);
+		addTrigger(
+			ManagerStates.IDLE,
+			ManagerStates.GOING_HIGH,
+			() ->
+				Controllers.DRIVER_CONTROLLER.getRightTriggerAxis() >
+				Controllers.TRIGGERS_REGISTER_POINT
+		);
+		addTrigger(
+			ManagerStates.IDLE,
+			ManagerStates.GOING_MID,
+			() ->
+				Controllers.DRIVER_CONTROLLER.getLeftTriggerAxis() >
+				Controllers.TRIGGERS_REGISTER_POINT
 		);
 
-		addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING, () ->
+		// from intaking
+		addTrigger(
+			ManagerStates.INTAKING,
+			ManagerStates.IDLE,
+			() ->
+				Controllers.DRIVER_CONTROLLER.getBButtonPressed() ||
+				Controllers.OPERATOR_CONTROLLER.getAButtonPressed() ||
+				indexer.getNumberOfPieces() == MAX_PIECES
+		);
+		addTrigger(ManagerStates.INTAKING, ManagerStates.OUTTAKING, () ->
 			Controllers.DRIVER_CONTROLLER.getAButtonPressed()
 		);
-		addTrigger(ManagerStates.INTAKING, ManagerStates.IDLE, () ->
+
+		// from outtaking
+		addTrigger(ManagerStates.OUTTAKING, ManagerStates.IDLE, () ->
 			Controllers.DRIVER_CONTROLLER.getAButtonPressed()
+		);
+		addTrigger(ManagerStates.OUTTAKING, ManagerStates.INTAKING, () ->
+			Controllers.DRIVER_CONTROLLER.getYButtonPressed()
+		);
+
+		// form going high
+		addTrigger(ManagerStates.GOING_HIGH, ManagerStates.SCORING_HIGH, () -> elevator.nearTarget()
+		);
+
+		// from scoring high
+		addTrigger(
+			ManagerStates.SCORING_HIGH,
+			ManagerStates.IDLE,
+			() -> Controllers.OPERATOR_CONTROLLER.getAButtonPressed() || indexer.isEmpty()
+		);
+
+		// from going mid
+		addTrigger(ManagerStates.GOING_MID, ManagerStates.SCORING_MID, () -> elevator.nearTarget());
+
+		// from scoring mid
+		addTrigger(
+			ManagerStates.SCORING_MID,
+			ManagerStates.IDLE,
+			() -> Controllers.OPERATOR_CONTROLLER.getAButtonPressed() || indexer.isEmpty()
+		);
+
+		// return to idle
+		addRunnableTrigger(
+			() -> setState(ManagerStates.IDLE),
+			() -> Controllers.OPERATOR_CONTROLLER.getXButtonPressed()
 		);
 	}
 
@@ -80,16 +137,20 @@ public class Manager extends Subsystem<ManagerStates> {
 
 	@Override
 	public void runState() {
-		Logger.recordOutput("Manager/State", getState().getStateString());
-		Logger.recordOutput("Manager/State Time", getStateTime());
+		Logger.recordOutput(
+			ManagerConstants.SUBSYSTEM_NAME + "/State",
+			getState().getStateString()
+		);
+		Logger.recordOutput(ManagerConstants.SUBSYSTEM_NAME + "/State Time", getStateTime());
 
 		elevator.setState(getState().getElevatorState());
 		intake.setState(getState().getIntakeState());
+		indexer.setState(getState().getIndexerState());
 
 		drive.periodic();
 		vision.periodic();
 		elevator.periodic();
 		intake.periodic();
-		// Other subsystem periodics go here
+		indexer.periodic();
 	}
 }

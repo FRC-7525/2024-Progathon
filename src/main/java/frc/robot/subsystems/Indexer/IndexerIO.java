@@ -1,19 +1,15 @@
 package frc.robot.subsystems.Indexer;
 
-import static frc.robot.subsystems.Indexer.IndexerConstants.*;
-
 import com.pathplanner.lib.config.PIDConstants;
-import edu.wpi.first.math.geometry.Pose3d;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface IndexerIO {
 	@AutoLog
 	public static class IndexerIOInputs {
 
+		public boolean[] beamBreakArray = new boolean[IndexerConstants.NUM_BEAM_BREAK];
 		public double wheelSpeed;
 		public double wheelSetpoint;
-
-		public boolean[] beamBreakArray = new boolean[MAX_GAME_PIECES];
 	}
 
 	public default void updateInputs(IndexerIOInputs inputs) {}

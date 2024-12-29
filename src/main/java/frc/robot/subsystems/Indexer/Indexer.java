@@ -6,26 +6,31 @@ import org.littletonrobotics.junction.Logger;
 
 public class Indexer extends Subsystem<IndexerStates> {
 
+	private static Indexer instance;
 	private IndexerIO io;
 	private IndexerIOInputsAutoLogged inputs;
 
-	public Indexer(IndexerIO io) {
+	private Indexer() {
 		super("Indexer", IndexerStates.OFF);
-		this.io = io;
-
 		addTrigger(IndexerStates.AUTONOMOUS_OFF, IndexerStates.AUTONOMOUS_ON, () ->
 			io.nextSensorTriggered()
 		);
 		addTrigger(IndexerStates.AUTONOMOUS_ON, IndexerStates.AUTONOMOUS_OFF, () -> true); //TODO: actually get intake beam break
 
-		switch (GlobalConstants.ROBOT_MODE) {
-			case REAL:
-				break;
-			case SIM:
-				break;
-			default:
-				break;
+		this.io = switch (GlobalConstants.ROBOT_MODE) {
+			case SIM -> new IndexerIOSim();
+			case REAL -> new IndexerIOTalonFX();
+			case TESTING -> new IndexerIOTalonFX();
+			case REPLAY -> new IndexerIOSim();
+		};
+		this.inputs = new IndexerIOInputsAutoLogged();
+	}
+
+	public static Indexer getInstance() {
+		if (instance == null) {
+			instance = new Indexer();
 		}
+		return instance;
 	}
 
 	protected void runState() {
@@ -48,5 +53,9 @@ public class Indexer extends Subsystem<IndexerStates> {
 
 	public int getNumberOfPieces() {
 		return io.getNumberOfPieces();
+	}
+
+	public boolean isEmpty() {
+		return io.getNumberOfPieces() == 0;
 	}
 }
