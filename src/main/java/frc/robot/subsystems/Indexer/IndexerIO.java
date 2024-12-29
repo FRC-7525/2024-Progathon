@@ -6,13 +6,15 @@ import com.pathplanner.lib.config.PIDConstants;
 
 import edu.wpi.first.math.geometry.Pose3d;
 
+import static frc.robot.subsystems.Indexer.IndexerConstants.*;
+
 public interface IndexerIO {
     @AutoLog
 	public static class IndexerIOInputs {
         public double wheelSpeed;
         public double wheelSetpoint;
 
-        public boolean[] beamBreakArray = new boolean[6];
+        public boolean[] beamBreakArray = new boolean[MAX_GAME_PIECES];
 	}
 
     public default void updateInputs(IndexerIOInputs inputs) {}

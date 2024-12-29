@@ -8,6 +8,8 @@ import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DigitalInput;
 
+import static frc.robot.subsystems.Indexer.IndexerConstants.*;
+
 public class IndexerIOTalonFX implements IndexerIO {
     private TalonFX wheelMotor;
 
@@ -30,8 +32,8 @@ public class IndexerIOTalonFX implements IndexerIO {
 
         speedController = new PIDController(0, 0, 0);
 
-        beamBreaks = new DigitalInput[6];
-        for (int i = 0; i < 6; i++) {
+        beamBreaks = new DigitalInput[MAX_GAME_PIECES];
+        for (int i = 0; i < MAX_GAME_PIECES; i++) {
             beamBreaks[i] = new DigitalInput(IndexerConstants.BEAM_BREAK_PORTS[i]);
             beamBreakDebouncers[i] = new Debouncer(
                 IndexerConstants.DEBOUNCE_TIME,
@@ -53,7 +55,7 @@ public class IndexerIOTalonFX implements IndexerIO {
         inputs.wheelSetpoint = wheelSpeedpoint;
         inputs.wheelSpeed = wheelMotor.getVelocity().getValueAsDouble();
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < MAX_GAME_PIECES; i++) {
             inputs.beamBreakArray[i] = !beamBreakDebouncers[i].calculate(beamBreaks[i].get());
         }
     }
@@ -76,7 +78,7 @@ public class IndexerIOTalonFX implements IndexerIO {
 
     @Override
     public int getNumberOfPieces() {
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < MAX_GAME_PIECES; i++) {
             if (beamBreakDebouncers[i].calculate(beamBreaks[i].get())) {
                 currentNumOfPieces = i;
                 return i;

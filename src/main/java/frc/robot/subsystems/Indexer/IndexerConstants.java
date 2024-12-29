@@ -12,6 +12,8 @@ public final class IndexerConstants {
 
     public static final double SIM_UPDATE_TIME = 0.05;
 
+    public static final int MAX_GAME_PIECES = 6;
+
     public static final double ON = 5;
     public static final double OFF = 0;
 }
