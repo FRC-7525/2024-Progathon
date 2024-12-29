@@ -2,7 +2,7 @@ package frc.robot.subsystems.Indexer;
 
 import org.littletonrobotics.junction.Logger;
 
-import frc.robot.Constants;
+import frc.robot.GlobalConstants;
 import frc.robot.pioneersLib.subsystem.Subsystem;
 
 public class Indexer extends Subsystem<IndexerStates> {
@@ -17,7 +17,7 @@ public class Indexer extends Subsystem<IndexerStates> {
         addTrigger(IndexerStates.AUTONOMOUS_OFF, IndexerStates.AUTONOMOUS_ON, () -> io.nextSensorTriggered());
         addTrigger(IndexerStates.AUTONOMOUS_ON, IndexerStates.AUTONOMOUS_OFF, () -> true); //TODO: actually get intake beam break
 
-        switch (Constants.ROBOT_MODE) {
+        switch (GlobalConstants.ROBOT_MODE) {
             case REAL:
                 break;
             case SIM:
