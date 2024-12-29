@@ -3,8 +3,6 @@ package frc.robot.subsystems.Manager;
 import static frc.robot.GlobalConstants.*;
 import static frc.robot.GlobalConstants.Controllers.TEST_CONTROLLER;
 
-import org.littletonrobotics.junction.Logger;
-
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.pioneersLib.subsystem.Subsystem;
@@ -13,9 +11,9 @@ import frc.robot.subsystems.Elevator.Elevator;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Vision.Vision;
+import org.littletonrobotics.junction.Logger;
 
 public class Manager extends Subsystem<ManagerStates> {
-
     private static Manager instance;
 
     private final Drive drive = Drive.getInstance();

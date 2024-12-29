@@ -5,7 +5,6 @@ import static edu.wpi.first.units.Units.DegreesPerSecond;
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -20,7 +19,6 @@ import frc.robot.pioneersLib.misc.VisionUtil.CameraResolution;
 import frc.robot.subsystems.Drive.Drive.SysIdMode;
 
 public final class GlobalConstants {
-
     public enum RobotMode {
         REAL,
         TESTING,

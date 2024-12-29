@@ -1,9 +1,8 @@
 package frc.robot.subsystems.Indexer;
 
-import org.littletonrobotics.junction.Logger;
-
 import frc.robot.GlobalConstants;
 import frc.robot.pioneersLib.subsystem.Subsystem;
+import org.littletonrobotics.junction.Logger;
 
 public class Indexer extends Subsystem<IndexerStates> {
     private static Indexer instance;

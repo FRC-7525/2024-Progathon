@@ -1,7 +1,7 @@
 name: Format With Prettier
 
 on:
-  push:
+  pull_request:
     branches:
       - main
 
@@ -61,8 +61,6 @@ jobs:
           elif [ "${GITHUB_EVENT_NAME}" == "push" ]; then
             git push origin "${GITHUB_REF#refs/heads/}"
           fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Notify if no Changes
         if: steps.git-check.outcome == 'failure'
