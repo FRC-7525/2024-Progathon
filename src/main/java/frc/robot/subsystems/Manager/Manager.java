@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.pioneersLib.subsystem.Subsystem;
 import frc.robot.subsystems.Drive.Drive;
 import frc.robot.subsystems.Elevator.Elevator;
-import frc.robot.subsystems.Elevator.ElevatorStates;
+import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Vision.Vision;
 
@@ -23,6 +23,7 @@ public class Manager extends Subsystem<ManagerStates> {
     private final Elevator elevator = Elevator.getInstance();
     private final CommandScheduler commandScheduler = CommandScheduler.getInstance();
     private final Intake intake = Intake.getInstance();
+    private final Indexer indexer = Indexer.getInstance();
     // Change to change the subsystem that gets tested (has runnable sysID tests) saftey ish
     private final Subsystem<?> sysIdSubsystem = drive;
 
@@ -39,15 +40,35 @@ public class Manager extends Subsystem<ManagerStates> {
             addRunnableTrigger(() -> {commandScheduler.schedule(sysIdSubsystem.sysIdQuasistatic(Direction.kForward));}, () -> TEST_CONTROLLER.getXButtonPressed());
             addRunnableTrigger(() -> {commandScheduler.schedule(sysIdSubsystem.sysIdQuasistatic(Direction.kReverse));}, () -> TEST_CONTROLLER.getYButtonPressed());
         }
-        addTrigger(ManagerStates.IDLE, ManagerStates.SCORING_HIGH, () -> Controllers.DRIVER_CONTROLLER.getXButtonPressed());
-        addTrigger(ManagerStates.SCORING_HIGH, ManagerStates.IDLE, () -> Controllers.DRIVER_CONTROLLER.getXButtonPressed());
+        //From idle
+        addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING, () -> Controllers.DRIVER_CONTROLLER.getBButtonPressed());
+        addTrigger(ManagerStates.IDLE, ManagerStates.OUTTAKING, () -> Controllers.DRIVER_CONTROLLER.getAButtonPressed());
+        addTrigger(ManagerStates.IDLE, ManagerStates.GOING_HIGH, () -> Controllers.DRIVER_CONTROLLER.getRightTriggerAxis() > Controllers.TRIGGERS_REGISTER_POINT);
+        addTrigger(ManagerStates.IDLE, ManagerStates.GOING_MID, () -> Controllers.DRIVER_CONTROLLER.getLeftTriggerAxis() > Controllers.TRIGGERS_REGISTER_POINT);
 
-        addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING, () -> Controllers.DRIVER_CONTROLLER.getAButtonPressed());
-        addTrigger(ManagerStates.INTAKING, ManagerStates.IDLE, () -> Controllers.DRIVER_CONTROLLER.getAButtonPressed());
+        //from intaking
+        addTrigger(ManagerStates.INTAKING, ManagerStates.IDLE, () -> Controllers.DRIVER_CONTROLLER.getBButtonPressed() || Controllers.OPERATOR_CONTROLLER.getAButtonPressed() || indexer.getNumberOfPieces() == MAX_PIECES);
+        addTrigger(ManagerStates.INTAKING, ManagerStates.OUTTAKING, () -> Controllers.DRIVER_CONTROLLER.getAButtonPressed());
+
+        //from outtaking
+        addTrigger(ManagerStates.OUTTAKING, ManagerStates.IDLE, () -> Controllers.DRIVER_CONTROLLER.getAButtonPressed());
+        addTrigger(ManagerStates.OUTTAKING, ManagerStates.INTAKING, () -> Controllers.DRIVER_CONTROLLER.getYButtonPressed());
+
+        //GOING HIGH
+        addTrigger(ManagerStates.GOING_HIGH, ManagerStates.SCORING_HIGH, () -> elevator.nearTarget());
+
+        //SCORING HIGH
+        addTrigger(ManagerStates.SCORING_HIGH, ManagerStates.IDLE, () -> Controllers.OPERATOR_CONTROLLER.getAButtonPressed() || indexer.isEmpty());
+
+        //GOING MID
+        addTrigger(ManagerStates.GOING_MID, ManagerStates.SCORING_MID, () -> elevator.nearTarget());
+
+        //SCORING MID
+        addTrigger(ManagerStates.GOING_MID, ManagerStates.IDLE, () -> Controllers.OPERATOR_CONTROLLER.getAButtonPressed() || indexer.isEmpty());
     }
 
     public static Manager getInstance() {
-        if (instance == null) {
+        if (instance == null) {     
             instance = new Manager();
         }
         return instance;
