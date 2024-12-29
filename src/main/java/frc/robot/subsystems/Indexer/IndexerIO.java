@@ -1,39 +1,40 @@
 package frc.robot.subsystems.Indexer;
 
-import org.littletonrobotics.junction.AutoLog;
+import static frc.robot.subsystems.Indexer.IndexerConstants.*;
 
 import com.pathplanner.lib.config.PIDConstants;
-
 import edu.wpi.first.math.geometry.Pose3d;
+import org.littletonrobotics.junction.AutoLog;
 
 public interface IndexerIO {
-    @AutoLog
+	@AutoLog
 	public static class IndexerIOInputs {
-        public double wheelSpeed;
-        public double wheelSetpoint;
 
-        public boolean[] beamBreakArray = new boolean[6];
+		public double wheelSpeed;
+		public double wheelSetpoint;
+
+		public boolean[] beamBreakArray = new boolean[MAX_GAME_PIECES];
 	}
 
-    public default void updateInputs(IndexerIOInputs inputs) {}
-    
-    public default void setSetpoint(double setpoint) {}
+	public default void updateInputs(IndexerIOInputs inputs) {}
 
-    public default void stop() {}
+	public default void setSetpoint(double setpoint) {}
 
-    public default double getSpeed() {
-        return 0.0;
-    }
+	public default void stop() {}
 
-    public default void configurePID(PIDConstants constants) {}
+	public default double getSpeed() {
+		return 0.0;
+	}
 
-    public default int getNumberOfPieces() {
-        return 0;
-    }
+	public default void configurePID(PIDConstants constants) {}
 
-    public default void updateCurrentSensor() {}
+	public default int getNumberOfPieces() {
+		return 0;
+	}
 
-    public default boolean nextSensorTriggered() {
-        return false;
-    }
+	public default void updateCurrentSensor() {}
+
+	public default boolean nextSensorTriggered() {
+		return false;
+	}
 }
