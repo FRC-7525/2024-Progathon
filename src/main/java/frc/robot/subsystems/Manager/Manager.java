@@ -40,31 +40,34 @@ public class Manager extends Subsystem<ManagerStates> {
             addRunnableTrigger(() -> {commandScheduler.schedule(sysIdSubsystem.sysIdQuasistatic(Direction.kForward));}, () -> TEST_CONTROLLER.getXButtonPressed());
             addRunnableTrigger(() -> {commandScheduler.schedule(sysIdSubsystem.sysIdQuasistatic(Direction.kReverse));}, () -> TEST_CONTROLLER.getYButtonPressed());
         }
-        // From idle
+        // from idle
         addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING, () -> Controllers.DRIVER_CONTROLLER.getBButtonPressed());
         addTrigger(ManagerStates.IDLE, ManagerStates.OUTTAKING, () -> Controllers.DRIVER_CONTROLLER.getAButtonPressed());
         addTrigger(ManagerStates.IDLE, ManagerStates.GOING_HIGH, () -> Controllers.DRIVER_CONTROLLER.getRightTriggerAxis() > Controllers.TRIGGERS_REGISTER_POINT);
         addTrigger(ManagerStates.IDLE, ManagerStates.GOING_MID, () -> Controllers.DRIVER_CONTROLLER.getLeftTriggerAxis() > Controllers.TRIGGERS_REGISTER_POINT);
 
-        //from intaking
+        // from intaking
         addTrigger(ManagerStates.INTAKING, ManagerStates.IDLE, () -> Controllers.DRIVER_CONTROLLER.getBButtonPressed() || Controllers.OPERATOR_CONTROLLER.getAButtonPressed() || indexer.getNumberOfPieces() == MAX_PIECES);
         addTrigger(ManagerStates.INTAKING, ManagerStates.OUTTAKING, () -> Controllers.DRIVER_CONTROLLER.getAButtonPressed());
 
-        //from outtaking
+        // from outtaking
         addTrigger(ManagerStates.OUTTAKING, ManagerStates.IDLE, () -> Controllers.DRIVER_CONTROLLER.getAButtonPressed());
         addTrigger(ManagerStates.OUTTAKING, ManagerStates.INTAKING, () -> Controllers.DRIVER_CONTROLLER.getYButtonPressed());
 
-        //form going high
+        // form going high
         addTrigger(ManagerStates.GOING_HIGH, ManagerStates.SCORING_HIGH, () -> elevator.nearTarget());
 
-        //from scoring high
+        // from scoring high
         addTrigger(ManagerStates.SCORING_HIGH, ManagerStates.IDLE, () -> Controllers.OPERATOR_CONTROLLER.getAButtonPressed() || indexer.isEmpty());
 
-        //from going mid
+        // from going mid
         addTrigger(ManagerStates.GOING_MID, ManagerStates.SCORING_MID, () -> elevator.nearTarget());
 
-        //from scoring mid
+        // from scoring mid
         addTrigger(ManagerStates.SCORING_MID, ManagerStates.IDLE, () -> Controllers.OPERATOR_CONTROLLER.getAButtonPressed() || indexer.isEmpty());
+
+        // return to idle
+        addRunnableTrigger(() -> setState(ManagerStates.IDLE), () -> Controllers.OPERATOR_CONTROLLER.getXButtonPressed());
     }
 
     public static Manager getInstance() {
@@ -76,12 +79,8 @@ public class Manager extends Subsystem<ManagerStates> {
 
     @Override
     public void runState() {
-        Logger.recordOutput("Manager/State", getState().getStateString());
-        Logger.recordOutput("Manager/State Time", getStateTime());
-
-        if (Controllers.OPERATOR_CONTROLLER.getXButtonPressed()) {
-            setState(ManagerStates.IDLE);
-        }
+        Logger.recordOutput(ManagerConstants.SUBSYSTEM_NAME + "/State", getState().getStateString());
+        Logger.recordOutput(ManagerConstants.SUBSYSTEM_NAME + "/State Time", getStateTime());
 
         elevator.setState(getState().getElevatorState());
         intake.setState(getState().getIntakeState());
@@ -93,6 +92,5 @@ public class Manager extends Subsystem<ManagerStates> {
         intake.periodic();
         indexer.periodic();
 
-        // Other subsystem periodics go here
     }
 }
