@@ -4,7 +4,6 @@ import org.littletonrobotics.junction.AutoLog;
 
 import com.pathplanner.lib.config.PIDConstants;
 
-import edu.wpi.first.math.geometry.Pose3d;
 
 public interface IndexerIO {
     @AutoLog
@@ -12,7 +11,7 @@ public interface IndexerIO {
         public double wheelSpeed;
         public double wheelSetpoint;
 
-        public boolean[] beamBreakArray = new boolean[6];
+        public boolean[] beamBreakArray = new boolean[IndexerConstants.NUM_BEAM_BREAK];
 	}
 
     public default void updateInputs(IndexerIOInputs inputs) {}

@@ -4,8 +4,6 @@ import org.littletonrobotics.junction.Logger;
 
 import frc.robot.GlobalConstants;
 import frc.robot.pioneersLib.subsystem.Subsystem;
-import frc.robot.subsystems.Elevator.ElevatorIOReal;
-import frc.robot.subsystems.Elevator.ElevatorIOSim;
 
 public class Indexer extends Subsystem<IndexerStates> {
     private static Indexer instance;
