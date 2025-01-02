@@ -3,6 +3,7 @@ package frc.robot.subsystems.Intake;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.GlobalConstants;
 import frc.robot.GlobalConstants.RobotMode;
@@ -15,6 +16,7 @@ public class IntakeIOReal implements IntakeIO {
 	private PIDController wheelSpeedController;
 	private double pivotPositionSetpoint;
 	private double wheelSpeedSetpoint;
+	private DigitalInput beamBreak;
 
 	public IntakeIOReal() {
 		wheelMotor = new TalonFX(IntakeConstants.Real.WHEEL_MOTOR_CANID);
@@ -31,6 +33,7 @@ public class IntakeIOReal implements IntakeIO {
 			IntakeConstants.Real.WHEEL_PID_CONSTANTS.kI,
 			IntakeConstants.Real.WHEEL_PID_CONSTANTS.kD
 		);
+		beamBreak = new DigitalInput(IntakeConstants.Real.BEAM_BREAK_DIO_PORT);
 	}
 
 	@Override
@@ -66,5 +69,10 @@ public class IntakeIOReal implements IntakeIO {
 			wheelSpeed
 		);
 		wheelMotor.setVoltage(voltage);
+	}
+
+	@Override
+	public boolean hasGamepiece() {
+		return beamBreak.get();
 	}
 }

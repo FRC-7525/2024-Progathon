@@ -61,8 +61,4 @@ public class IndexerIOSim implements IndexerIO {
 	public void configurePID(PIDConstants constants) {
 		speedController = new PIDController(constants.kP, constants.kI, constants.kD);
 	}
-
-	public boolean[] getBeamBreakArray() {
-		return beamBreakArray;
-	}
 }

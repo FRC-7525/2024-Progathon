@@ -101,6 +101,16 @@ public abstract class Subsystem<StateType extends SubsystemStates> extends Subsy
 		this.state = state;
 	}
 
+	// TODO: This is mad goofy
+	// For if you need to override set state
+	public void manualSetState(StateType state) {
+		this.state = state;
+	}
+
+	public void resetStateTimer() {
+		stateTimer.reset();
+	}
+
 	/**
 	 * Gets amount of time the state machine has been in the current state.
 	 *

@@ -4,12 +4,14 @@ import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.KilogramSquareMeters;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
+import static edu.wpi.first.units.Units.Seconds;
 
 import com.pathplanner.lib.config.PIDConstants;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.MomentOfInertia;
+import edu.wpi.first.units.measure.Time;
 
 public final class IntakeConstants {
 
@@ -38,12 +40,14 @@ public final class IntakeConstants {
 		public static final MomentOfInertia WHEEL_MOTOR_MOI = KilogramSquareMeters.of(1); // random value
 		public static final double WHEEL_MOTOR_GEARING = 3;
 		public static final PIDConstants WHEEL_PID_CONSTANTS = new PIDConstants(0.0012, 0, 0);
+		
+		public static final Time SIMULATED_INTAKING_TIME = Seconds.of(1);
 	}
 
 	public static final class Real {
-
 		public static final int WHEEL_MOTOR_CANID = 10;
 		public static final int PIVOT_MOTOR_CANID = 11;
+		public static final int BEAM_BREAK_DIO_PORT = 10;
 		public static final PIDConstants PIVOT_PID_CONSTANTS = new PIDConstants(3, 0, 0);
 		public static final PIDConstants WHEEL_PID_CONSTANTS = new PIDConstants(0.0012, 0, 0);
 	}
