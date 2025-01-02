@@ -13,20 +13,22 @@ public class Intake extends Subsystem<IntakeStates> {
 	private IntakeIOInputsAutoLogged inputs;
 	private static Intake instance;
 
-    // Strictly for sim
-    private double lastIntookSimulatedGampieceTime;
+	// Strictly for sim
+	private double lastIntookSimulatedGampieceTime;
 
 	private Intake(IntakeIO io) {
 		super("Intake", IntakeStates.IDLE);
 		this.io = io;
 		inputs = new IntakeIOInputsAutoLogged();
-        lastIntookSimulatedGampieceTime = 0.0;
+		lastIntookSimulatedGampieceTime = 0.0;
 	}
 
 	@Override
 	protected void runState() {
-        // ehhhh, yeah idk if this will work, ig its in the same loop as the reset so it should theoretically work
-        if (getStateTime() == 0) {lastIntookSimulatedGampieceTime = 0.0;}
+		// ehhhh, yeah idk if this will work, ig its in the same loop as the reset so it should theoretically work
+		if (getStateTime() == 0) {
+			lastIntookSimulatedGampieceTime = 0.0;
+		}
 
 		io.setPivotSetpoint(getState().getPivotSetpoint());
 		io.setWheelSpeed(getState().getWheelSpeedSetpoint());
@@ -49,18 +51,23 @@ public class Intake extends Subsystem<IntakeStates> {
 		return instance;
 	}
 
-    public boolean hasGamepiece() {
-        if (getState() == IntakeStates.INTAKING) {
-            if (GlobalConstants.ROBOT_MODE == GlobalConstants.RobotMode.REAL || GlobalConstants.ROBOT_MODE == GlobalConstants.RobotMode.TESTING) {
-                return io.hasGamepiece();
-            } else {
-                boolean gamepieceInIntake = getStateTime() - lastIntookSimulatedGampieceTime > IntakeConstants.Sim.SIMULATED_INTAKING_TIME.in(Seconds);
-                if (gamepieceInIntake) {
-                    lastIntookSimulatedGampieceTime = getStateTime();
-                }
-                return gamepieceInIntake;
-            }
-        }
-        return false;
-    }
+	public boolean hasGamepiece() {
+		if (getState() == IntakeStates.INTAKING) {
+			if (
+				GlobalConstants.ROBOT_MODE == GlobalConstants.RobotMode.REAL ||
+				GlobalConstants.ROBOT_MODE == GlobalConstants.RobotMode.TESTING
+			) {
+				return io.hasGamepiece();
+			} else {
+				boolean gamepieceInIntake =
+					getStateTime() - lastIntookSimulatedGampieceTime >
+					IntakeConstants.Sim.SIMULATED_INTAKING_TIME.in(Seconds);
+				if (gamepieceInIntake) {
+					lastIntookSimulatedGampieceTime = getStateTime();
+				}
+				return gamepieceInIntake;
+			}
+		}
+		return false;
+	}
 }
