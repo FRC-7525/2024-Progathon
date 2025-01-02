@@ -13,14 +13,21 @@ public class Intake extends Subsystem<IntakeStates> {
 	private IntakeIOInputsAutoLogged inputs;
 	private static Intake instance;
 
+    // Strictly for sim
+    private double lastIntookSimulatedGampieceTime;
+
 	private Intake(IntakeIO io) {
 		super("Intake", IntakeStates.IDLE);
 		this.io = io;
 		inputs = new IntakeIOInputsAutoLogged();
+        lastIntookSimulatedGampieceTime = 0.0;
 	}
 
 	@Override
 	protected void runState() {
+        // ehhhh, yeah idk if this will work, ig its in the same loop as the reset so it should theoretically work
+        if (getStateTime() == 0) {lastIntookSimulatedGampieceTime = 0.0;}
+
 		io.setPivotSetpoint(getState().getPivotSetpoint());
 		io.setWheelSpeed(getState().getWheelSpeedSetpoint());
 
@@ -47,8 +54,11 @@ public class Intake extends Subsystem<IntakeStates> {
             if (GlobalConstants.ROBOT_MODE == GlobalConstants.RobotMode.REAL || GlobalConstants.ROBOT_MODE == GlobalConstants.RobotMode.TESTING) {
                 return io.hasGamepiece();
             } else {
-                // TODO, happen more than once pls
-                return getStateTime() > IntakeConstants.Sim.SIMULATED_INTAKING_TIME.in(Seconds);
+                boolean gamepieceInIntake = getStateTime() - lastIntookSimulatedGampieceTime > IntakeConstants.Sim.SIMULATED_INTAKING_TIME.in(Seconds);
+                if (gamepieceInIntake) {
+                    lastIntookSimulatedGampieceTime = getStateTime();
+                }
+                return gamepieceInIntake;
             }
         }
         return false;
