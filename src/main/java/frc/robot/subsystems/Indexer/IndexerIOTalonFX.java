@@ -48,7 +48,7 @@ public class IndexerIOTalonFX implements IndexerIO {
 		);
 		wheelSpeedpoint = setpoint;
 
-		wheelMotor.setVoltage(wheelAppliedVoltage);
+		wheelMotor.set(wheelAppliedVoltage);
 	}
 
 	@Override

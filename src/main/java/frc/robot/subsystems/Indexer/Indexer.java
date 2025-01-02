@@ -1,9 +1,6 @@
 package frc.robot.subsystems.Indexer;
 
-import static edu.wpi.first.units.Units.Seconds;
-
 import frc.robot.GlobalConstants;
-import frc.robot.GlobalConstants.RobotMode;
 import frc.robot.pioneersLib.subsystem.Subsystem;
 import frc.robot.subsystems.Intake.Intake;
 import org.littletonrobotics.junction.Logger;
@@ -16,16 +13,6 @@ public class Indexer extends Subsystem<IndexerStates> {
 
 	private Indexer() {
 		super("Indexer", IndexerStates.OFF);
-		addTrigger(IndexerStates.AUTONOMOUS_ON, IndexerStates.AUTONOMOUS_OFF, () -> {
-			if (GlobalConstants.ROBOT_MODE == RobotMode.SIM) {
-				return getStateTime() > IndexerConstants.SIMULATED_INDEXING_TIME.in(Seconds);
-			} else {
-				return io.nextSensorTriggered();
-			}
-		});
-		addTrigger(IndexerStates.AUTONOMOUS_OFF, IndexerStates.AUTONOMOUS_ON, () ->
-			Intake.getInstance().hasGamepiece()
-		);
 
 		this.io = switch (GlobalConstants.ROBOT_MODE) {
 			case SIM -> new IndexerIOSim();
@@ -55,8 +42,6 @@ public class Indexer extends Subsystem<IndexerStates> {
 	public void periodic() {
 		super.periodic();
 
-		//TODO: Add output managing
-
 		Logger.processInputs("Indexer", inputs);
 		io.updateInputs(inputs);
 	}
@@ -69,13 +54,7 @@ public class Indexer extends Subsystem<IndexerStates> {
 		return io.getNumberOfPieces() == 0;
 	}
 
-	// TODO: THIS IS ACTUALLY SO GOOFY
-	@Override
-	public void setState(IndexerStates state) {
-		if (getState() != state) resetStateTimer();
-		if (state == IndexerStates.AUTONOMOUS_OFF && getState() == IndexerStates.AUTONOMOUS_ON) {
-			return;
-		}
-		manualSetState(state);
+	public double getStateTime() {
+		return getStateTime();
 	}
 }
