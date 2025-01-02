@@ -57,7 +57,7 @@ public class Manager extends Subsystem<ManagerStates> {
 				() -> TEST_CONTROLLER.getYButtonPressed()
 			);
 		}
-				
+
 		// from idle
 		addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING, () ->
 			Controllers.DRIVER_CONTROLLER.getBButtonPressed()

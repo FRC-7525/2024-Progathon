@@ -1,8 +1,7 @@
 package frc.robot.subsystems.Intake;
 
-import org.littletonrobotics.junction.AutoLog;
-
 import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
+import org.littletonrobotics.junction.AutoLog;
 
 public interface IntakeIO {
 	@AutoLog
@@ -17,11 +16,13 @@ public interface IntakeIO {
 		public double wheelSpeedSetpoint;
 	}
 
-	public default void updateInputs(IntakeIOInputs input) {};
+	public default void updateInputs(IntakeIOInputs input) {}
 
-	public default void setPivotSetpoint(double pivotSetpoint) {};
+	public default void setPivotSetpoint(double pivotSetpoint) {}
 
-	public default void setWheelSpeed(double wheelSpeed) {};
+	public default void setWheelSpeed(double wheelSpeed) {}
 
-	public default boolean hasGamepiece() {return false;};
+	public default boolean hasGamepiece() {
+		return false;
+	}
 }

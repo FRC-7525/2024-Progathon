@@ -42,15 +42,18 @@ public class Intake extends Subsystem<IntakeStates> {
 		return instance;
 	}
 
-    public boolean hasGamepiece() {
-        if (getState() == IntakeStates.INTAKING) {
-            if (GlobalConstants.ROBOT_MODE == GlobalConstants.RobotMode.REAL || GlobalConstants.ROBOT_MODE == GlobalConstants.RobotMode.TESTING) {
-                return io.hasGamepiece();
-            } else {
-                // TODO, happen more than once pls
-                return getStateTime() > IntakeConstants.Sim.SIMULATED_INTAKING_TIME.in(Seconds);
-            }
-        }
-        return false;
-    }
+	public boolean hasGamepiece() {
+		if (getState() == IntakeStates.INTAKING) {
+			if (
+				GlobalConstants.ROBOT_MODE == GlobalConstants.RobotMode.REAL ||
+				GlobalConstants.ROBOT_MODE == GlobalConstants.RobotMode.TESTING
+			) {
+				return io.hasGamepiece();
+			} else {
+				// TODO, happen more than once pls
+				return getStateTime() > IntakeConstants.Sim.SIMULATED_INTAKING_TIME.in(Seconds);
+			}
+		}
+		return false;
+	}
 }
