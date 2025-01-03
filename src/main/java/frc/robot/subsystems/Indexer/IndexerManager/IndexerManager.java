@@ -3,6 +3,8 @@ package frc.robot.subsystems.Indexer.IndexerManager;
 import frc.robot.pioneersLib.subsystem.Subsystem;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Indexer.IndexerConstants;
+import frc.robot.subsystems.Indexer.IndexerStates;
+import frc.robot.subsystems.Intake.Intake;
 
 public class IndexerManager extends Subsystem<IndexerManagerStates> {
 
@@ -37,16 +39,13 @@ public class IndexerManager extends Subsystem<IndexerManagerStates> {
     @Override
     public void runState() {
        if (getState() == IndexerManagerStates.AUTONOMOUS) {
-           indexer.setState(IndexerManagerStates.AUTONOMOUS.getIndexerState());
-            if (Indexer.getInstance().)
-
+            if (indexer.getState() == IndexerStates.OFF && Intake.getInstance().hasGamepiece()) {
+                indexer.setState(IndexerStates.INDEXING);
+            } else if (indexer.getState() == IndexerStates.INDEXING && indexer.nextSensorTriggered()) {
+                indexer.setState(IndexerStates.OFF);
+            }
        } else {
            indexer.setState(getState().getIndexerState());
        }
     }
-
-    // addTrigger(IndexerStates.AUTONOMOUS_ON, IndexerStates.AUTONOMOUS_OFF, () -> io.nextSensorTriggered());
-	// 	addTrigger(IndexerStates.AUTONOMOUS_OFF, IndexerStates.AUTONOMOUS_ON, () ->
-	// 		Intake.getInstance().hasGamepiece()
-	// 	);
 }

@@ -50,8 +50,8 @@ public class Indexer extends Subsystem<IndexerStates> {
 		return io.getNumberOfPieces();
 	}
 
-	public boolean isEmpty() {
-		return io.getNumberOfPieces() == 0;
+	public boolean nextSensorTriggered() {
+		return io.nextSensorTriggered();
 	}
 
 	public double getStateTime() {
