@@ -7,11 +7,31 @@ import frc.robot.subsystems.Intake.IntakeStates;
 
 public enum ManagerStates implements SubsystemStates {
 	IDLE("IDLE", ElevatorStates.IDLE, IntakeStates.IDLE, PublicIndexerInterfaceStates.OFF),
-	INTAKING("INTAKING", ElevatorStates.IDLE, IntakeStates.INTAKING, PublicIndexerInterfaceStates.OFF),
-	OUTTAKING("OUTTAKING", ElevatorStates.IDLE, IntakeStates.OUTTAKING, PublicIndexerInterfaceStates.OFF),
+	INTAKING(
+		"INTAKING",
+		ElevatorStates.IDLE,
+		IntakeStates.INTAKING,
+		PublicIndexerInterfaceStates.OFF
+	),
+	OUTTAKING(
+		"OUTTAKING",
+		ElevatorStates.IDLE,
+		IntakeStates.OUTTAKING,
+		PublicIndexerInterfaceStates.OFF
+	),
 	GOING_MID("GOING MID", ElevatorStates.MID, IntakeStates.IDLE, PublicIndexerInterfaceStates.OFF),
-	SCORING_MID("SCORING MID", ElevatorStates.MID, IntakeStates.IDLE, PublicIndexerInterfaceStates.SCORING),
-	GOING_HIGH("GOING HIGH", ElevatorStates.HIGH, IntakeStates.INTAKING, PublicIndexerInterfaceStates.OFF),
+	SCORING_MID(
+		"SCORING MID",
+		ElevatorStates.MID,
+		IntakeStates.IDLE,
+		PublicIndexerInterfaceStates.SCORING
+	),
+	GOING_HIGH(
+		"GOING HIGH",
+		ElevatorStates.HIGH,
+		IntakeStates.INTAKING,
+		PublicIndexerInterfaceStates.OFF
+	),
 	SCORING_HIGH(
 		"SCORING HIGH",
 		ElevatorStates.HIGH,

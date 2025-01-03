@@ -32,6 +32,5 @@ public class PublicIndexerInterface extends Subsystem<PublicIndexerInterfaceStat
 	}
 
 	@Override
-	public void runState() {
-	}
+	public void runState() {}
 }
