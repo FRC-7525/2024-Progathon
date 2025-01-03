@@ -66,6 +66,9 @@ public class IndexerIOSim implements IndexerIO {
 
 	@Override
 	public boolean nextSensorTriggered() {
-		return Indexer.getInstance().getStateTime() > IndexerConstants.SIMULATED_INDEXING_TIME.in(Seconds);
+		return (
+			Indexer.getInstance().getStateTime() >
+			IndexerConstants.SIMULATED_INDEXING_TIME.in(Seconds)
+		);
 	}
 }

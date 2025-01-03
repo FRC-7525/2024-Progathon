@@ -108,7 +108,9 @@ public class IntakeIOSim implements IntakeIO {
 	}
 
 	public boolean hasGamepiece() {
-		boolean gamepieceInIntake = Intake.getInstance().getStateTime() - lastIntookSimulatedGampieceTime > IntakeConstants.Sim.SIMULATED_INTAKING_TIME.in(Seconds);
+		boolean gamepieceInIntake =
+			Intake.getInstance().getStateTime() - lastIntookSimulatedGampieceTime >
+			IntakeConstants.Sim.SIMULATED_INTAKING_TIME.in(Seconds);
 		if (gamepieceInIntake) {
 			lastIntookSimulatedGampieceTime = Intake.getInstance().getStateTime();
 		}

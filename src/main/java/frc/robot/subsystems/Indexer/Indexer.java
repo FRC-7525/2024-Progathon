@@ -13,7 +13,6 @@ public class Indexer extends Subsystem<IndexerStates> {
 
 	private Indexer() {
 		super("Indexer", IndexerStates.OFF);
-
 		this.io = switch (GlobalConstants.ROBOT_MODE) {
 			case SIM -> new IndexerIOSim();
 			case REAL -> new IndexerIOTalonFX();
