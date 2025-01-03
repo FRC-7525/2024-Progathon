@@ -40,9 +40,9 @@ public class Intake extends Subsystem<IntakeStates> {
 		return instance;
 	}
 
-    public boolean hasGamepiece() {
+	public boolean hasGamepiece() {
 		return io.hasGamepiece();
-    }
+	}
 
 	public double getStateTime() {
 		return getStateTime();
