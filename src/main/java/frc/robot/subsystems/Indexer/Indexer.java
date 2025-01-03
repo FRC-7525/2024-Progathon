@@ -2,7 +2,6 @@ package frc.robot.subsystems.Indexer;
 
 import frc.robot.GlobalConstants;
 import frc.robot.pioneersLib.subsystem.Subsystem;
-import frc.robot.subsystems.Intake.Intake;
 import org.littletonrobotics.junction.Logger;
 
 public class Indexer extends Subsystem<IndexerStates> {

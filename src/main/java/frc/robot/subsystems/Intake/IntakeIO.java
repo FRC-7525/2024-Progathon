@@ -1,6 +1,5 @@
 package frc.robot.subsystems.Intake;
 
-import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface IntakeIO {
