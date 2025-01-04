@@ -5,7 +5,6 @@ import frc.robot.pioneersLib.subsystem.Subsystem;
 import frc.robot.subsystems.Indexer.IndexerManager.IndexerInterface;
 import frc.robot.subsystems.Indexer.IndexerManager.IndexerInterfaceStates;
 import frc.robot.subsystems.Intake.Intake;
-
 import org.littletonrobotics.junction.Logger;
 
 public class Indexer extends Subsystem<IndexerStates> {
@@ -26,19 +25,50 @@ public class Indexer extends Subsystem<IndexerStates> {
 		this.inputs = new IndexerIOInputsAutoLogged();
 
 		// State for scoring
-		addTrigger(IndexerStates.OFF, IndexerStates.SCORING, () -> IndexerInterface.getInstance().getState() == IndexerInterfaceStates.SCORING);
+		addTrigger(
+			IndexerStates.OFF,
+			IndexerStates.SCORING,
+			() -> IndexerInterface.getInstance().getState() == IndexerInterfaceStates.SCORING
+		);
 
 		// Return to Off
-		addTrigger(IndexerStates.SCORING, IndexerStates.OFF, () -> IndexerInterface.getInstance().getState() == IndexerInterfaceStates.OFF);
-		addTrigger(IndexerStates.AUTO_OFF, IndexerStates.OFF, () -> IndexerInterface.getInstance().getState() == IndexerInterfaceStates.OFF);
-		addTrigger(IndexerStates.AUTO_ON, IndexerStates.OFF, () -> IndexerInterface.getInstance().getState() == IndexerInterfaceStates.OFF);
-
+		addTrigger(
+			IndexerStates.SCORING,
+			IndexerStates.OFF,
+			() -> IndexerInterface.getInstance().getState() == IndexerInterfaceStates.OFF
+		);
+		addTrigger(
+			IndexerStates.AUTO_OFF,
+			IndexerStates.OFF,
+			() -> IndexerInterface.getInstance().getState() == IndexerInterfaceStates.OFF
+		);
+		addTrigger(
+			IndexerStates.AUTO_ON,
+			IndexerStates.OFF,
+			() -> IndexerInterface.getInstance().getState() == IndexerInterfaceStates.OFF
+		);
 
 		// Automaticall indexing
-		addTrigger(IndexerStates.OFF, IndexerStates.AUTO_OFF, () -> IndexerInterface.getInstance().getState() == IndexerInterfaceStates.AUTONOMOUS);
-		addTrigger(IndexerStates.AUTO_OFF, IndexerStates.AUTO_ON, () -> IndexerInterface.getInstance().getState() == IndexerInterfaceStates.AUTONOMOUS && Intake.getInstance().hasGamepiece());
-		addTrigger(IndexerStates.AUTO_ON, IndexerStates.AUTO_OFF, () -> IndexerInterface.getInstance().getState() != IndexerInterfaceStates.AUTONOMOUS && io.nextSensorTriggered());
-	}	
+		addTrigger(
+			IndexerStates.OFF,
+			IndexerStates.AUTO_OFF,
+			() -> IndexerInterface.getInstance().getState() == IndexerInterfaceStates.AUTONOMOUS
+		);
+		addTrigger(
+			IndexerStates.AUTO_OFF,
+			IndexerStates.AUTO_ON,
+			() ->
+				IndexerInterface.getInstance().getState() == IndexerInterfaceStates.AUTONOMOUS &&
+				Intake.getInstance().hasGamepiece()
+		);
+		addTrigger(
+			IndexerStates.AUTO_ON,
+			IndexerStates.AUTO_OFF,
+			() ->
+				IndexerInterface.getInstance().getState() != IndexerInterfaceStates.AUTONOMOUS &&
+				io.nextSensorTriggered()
+		);
+	}
 
 	public static Indexer getInstance() {
 		if (instance == null) {
