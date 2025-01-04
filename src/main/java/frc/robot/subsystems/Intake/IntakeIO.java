@@ -15,9 +15,13 @@ public interface IntakeIO {
 		public double wheelSpeedSetpoint;
 	}
 
-	public void updateInputs(IntakeIOInputs input);
+	public default void updateInputs(IntakeIOInputs input) {}
 
-	public void setPivotSetpoint(double pivotSetpoint);
+	public default void setPivotSetpoint(double pivotSetpoint) {}
 
-	public void setWheelSpeed(double wheelSpeed);
+	public default void setWheelSpeed(double wheelSpeed) {}
+
+	public default boolean hasGamepiece() {
+		return false;
+	}
 }

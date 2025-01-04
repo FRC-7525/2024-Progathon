@@ -1,5 +1,9 @@
 package frc.robot.subsystems.Indexer;
 
+import static edu.wpi.first.units.Units.Seconds;
+
+import edu.wpi.first.units.measure.Time;
+
 public final class IndexerConstants {
 
 	public static final int SPINNER_ID = 1;
@@ -15,6 +19,8 @@ public final class IndexerConstants {
 	public static final double SIM_UPDATE_TIME = 0.05;
 
 	public static final int MAX_GAME_PIECES = 6;
+
+	public static final Time SIMULATED_INDEXING_TIME = Seconds.of(1);
 
 	public static final double ON = 5;
 	public static final double OFF = 0;

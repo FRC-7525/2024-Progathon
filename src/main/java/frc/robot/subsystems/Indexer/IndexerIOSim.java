@@ -1,5 +1,7 @@
 package frc.robot.subsystems.Indexer;
 
+import static edu.wpi.first.units.Units.Seconds;
+
 import com.pathplanner.lib.config.PIDConstants;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -62,7 +64,11 @@ public class IndexerIOSim implements IndexerIO {
 		speedController = new PIDController(constants.kP, constants.kI, constants.kD);
 	}
 
-	public boolean[] getBeamBreakArray() {
-		return beamBreakArray;
+	@Override
+	public boolean nextSensorTriggered() {
+		return (
+			Indexer.getInstance().getStateTime() >
+			IndexerConstants.SIMULATED_INDEXING_TIME.in(Seconds)
+		);
 	}
 }

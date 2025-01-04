@@ -1,5 +1,6 @@
 package frc.robot.subsystems.Intake;
 
+import static edu.wpi.first.units.Units.Seconds;
 import static frc.robot.GlobalConstants.SIM_DELTA_TIME;
 
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -25,6 +26,8 @@ public class IntakeIOSim implements IntakeIO {
 
 	private double wheelSpeedSetpoint;
 	private double pivotPositionSetpoint;
+
+	private double lastIntookSimulatedGampieceTime;
 
 	IntakeIOSim() {
 		wheelMotor = new TalonFX(IntakeConstants.Real.WHEEL_MOTOR_CANID);
@@ -65,6 +68,7 @@ public class IntakeIOSim implements IntakeIO {
 
 		wheelSpeedSetpoint = 0;
 		pivotPositionSetpoint = 0;
+		lastIntookSimulatedGampieceTime = 0;
 	}
 
 	@Override
@@ -101,5 +105,15 @@ public class IntakeIOSim implements IntakeIO {
 				wheelSpeedSetpoint
 			)
 		);
+	}
+
+	public boolean hasGamepiece() {
+		boolean gamepieceInIntake =
+			Intake.getInstance().getStateTime() - lastIntookSimulatedGampieceTime >
+			IntakeConstants.Sim.SIMULATED_INTAKING_TIME.in(Seconds);
+		if (gamepieceInIntake) {
+			lastIntookSimulatedGampieceTime = Intake.getInstance().getStateTime();
+		}
+		return gamepieceInIntake;
 	}
 }

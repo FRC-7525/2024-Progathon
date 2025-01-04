@@ -7,8 +7,8 @@ import org.littletonrobotics.junction.Logger;
 
 public class Intake extends Subsystem<IntakeStates> {
 
-	IntakeIO io;
-	IntakeIOInputsAutoLogged inputs;
+	private IntakeIO io;
+	private IntakeIOInputsAutoLogged inputs;
 	private static Intake instance;
 
 	private Intake(IntakeIO io) {
@@ -38,5 +38,13 @@ public class Intake extends Subsystem<IntakeStates> {
 			instance = new Intake(intakeIO);
 		}
 		return instance;
+	}
+
+	public boolean hasGamepiece() {
+		return io.hasGamepiece();
+	}
+
+	public double getStateTime() {
+		return getStateTime();
 	}
 }

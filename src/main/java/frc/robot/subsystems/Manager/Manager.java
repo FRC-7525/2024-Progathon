@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.pioneersLib.subsystem.Subsystem;
 import frc.robot.subsystems.Drive.Drive;
 import frc.robot.subsystems.Elevator.Elevator;
-import frc.robot.subsystems.Indexer.Indexer;
+import frc.robot.subsystems.Indexer.IndexerManager.IndexerInterface;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Vision.Vision;
 import org.littletonrobotics.junction.Logger;
@@ -22,7 +22,7 @@ public class Manager extends Subsystem<ManagerStates> {
 	private final Elevator elevator = Elevator.getInstance();
 	private final CommandScheduler commandScheduler = CommandScheduler.getInstance();
 	private final Intake intake = Intake.getInstance();
-	private final Indexer indexer = Indexer.getInstance();
+	private final IndexerInterface indexerInterface = IndexerInterface.getInstance();
 	// Change to change the subsystem that gets tested (has runnable sysID tests) saftey ish
 	private final Subsystem<?> sysIdSubsystem = drive;
 
@@ -57,6 +57,7 @@ public class Manager extends Subsystem<ManagerStates> {
 				() -> TEST_CONTROLLER.getYButtonPressed()
 			);
 		}
+
 		// from idle
 		addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING, () ->
 			Controllers.DRIVER_CONTROLLER.getBButtonPressed()
@@ -86,7 +87,7 @@ public class Manager extends Subsystem<ManagerStates> {
 			() ->
 				Controllers.DRIVER_CONTROLLER.getBButtonPressed() ||
 				Controllers.OPERATOR_CONTROLLER.getAButtonPressed() ||
-				indexer.getNumberOfPieces() == MAX_PIECES
+				indexerInterface.isFull()
 		);
 		addTrigger(ManagerStates.INTAKING, ManagerStates.OUTTAKING, () ->
 			Controllers.DRIVER_CONTROLLER.getAButtonPressed()
@@ -108,7 +109,7 @@ public class Manager extends Subsystem<ManagerStates> {
 		addTrigger(
 			ManagerStates.SCORING_HIGH,
 			ManagerStates.IDLE,
-			() -> Controllers.OPERATOR_CONTROLLER.getAButtonPressed() || indexer.isEmpty()
+			() -> Controllers.OPERATOR_CONTROLLER.getAButtonPressed() || indexerInterface.isEmpty()
 		);
 
 		// from going mid
@@ -118,7 +119,7 @@ public class Manager extends Subsystem<ManagerStates> {
 		addTrigger(
 			ManagerStates.SCORING_MID,
 			ManagerStates.IDLE,
-			() -> Controllers.OPERATOR_CONTROLLER.getAButtonPressed() || indexer.isEmpty()
+			() -> Controllers.OPERATOR_CONTROLLER.getAButtonPressed() || indexerInterface.isEmpty()
 		);
 
 		// return to idle
@@ -145,12 +146,12 @@ public class Manager extends Subsystem<ManagerStates> {
 
 		elevator.setState(getState().getElevatorState());
 		intake.setState(getState().getIntakeState());
-		indexer.setState(getState().getIndexerState());
+		indexerInterface.setState(getState().getIndexerInterfaceState());
 
 		drive.periodic();
 		vision.periodic();
 		elevator.periodic();
 		intake.periodic();
-		indexer.periodic();
+		indexerInterface.periodic();
 	}
 }
