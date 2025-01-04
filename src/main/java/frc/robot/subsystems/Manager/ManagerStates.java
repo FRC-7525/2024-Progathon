@@ -2,28 +2,28 @@ package frc.robot.subsystems.Manager;
 
 import frc.robot.pioneersLib.subsystem.SubsystemStates;
 import frc.robot.subsystems.Elevator.ElevatorStates;
-import frc.robot.subsystems.Indexer.IndexerManager.PublicIndexerInterfaceStates;
+import frc.robot.subsystems.Indexer.IndexerManager.IndexerInterfaceStates;
 import frc.robot.subsystems.Intake.IntakeStates;
 
 public enum ManagerStates implements SubsystemStates {
-	IDLE("IDLE", ElevatorStates.IDLE, IntakeStates.IDLE, PublicIndexerInterfaceStates.OFF),
-	INTAKING("INTAKING", ElevatorStates.IDLE, IntakeStates.INTAKING, PublicIndexerInterfaceStates.OFF),
-	OUTTAKING("OUTTAKING", ElevatorStates.IDLE, IntakeStates.OUTTAKING, PublicIndexerInterfaceStates.OFF),
-	GOING_MID("GOING MID", ElevatorStates.MID, IntakeStates.IDLE, PublicIndexerInterfaceStates.OFF),
-	SCORING_MID("SCORING MID", ElevatorStates.MID, IntakeStates.IDLE, PublicIndexerInterfaceStates.SCORING),
-	GOING_HIGH("GOING HIGH", ElevatorStates.HIGH, IntakeStates.INTAKING, PublicIndexerInterfaceStates.OFF),
+	IDLE("IDLE", ElevatorStates.IDLE, IntakeStates.IDLE, IndexerInterfaceStates.OFF),
+	INTAKING("INTAKING", ElevatorStates.IDLE, IntakeStates.INTAKING, IndexerInterfaceStates.OFF),
+	OUTTAKING("OUTTAKING", ElevatorStates.IDLE, IntakeStates.OUTTAKING, IndexerInterfaceStates.OFF),
+	GOING_MID("GOING MID", ElevatorStates.MID, IntakeStates.IDLE, IndexerInterfaceStates.OFF),
+	SCORING_MID("SCORING MID", ElevatorStates.MID, IntakeStates.IDLE, IndexerInterfaceStates.SCORING),
+	GOING_HIGH("GOING HIGH", ElevatorStates.HIGH, IntakeStates.INTAKING, IndexerInterfaceStates.OFF),
 	SCORING_HIGH(
 		"SCORING HIGH",
 		ElevatorStates.HIGH,
 		IntakeStates.IDLE,
-		PublicIndexerInterfaceStates.SCORING
+		IndexerInterfaceStates.SCORING
 	);
 
 	ManagerStates(
 		String stateString,
 		ElevatorStates elevatorState,
 		IntakeStates intakeState,
-		PublicIndexerInterfaceStates indexerInterfaceState
+		IndexerInterfaceStates indexerInterfaceState
 	) {
 		this.stateString = stateString;
 		this.elevatorState = elevatorState;
@@ -34,7 +34,7 @@ public enum ManagerStates implements SubsystemStates {
 	private String stateString;
 	private IntakeStates intakeState;
 	private ElevatorStates elevatorState;
-	private PublicIndexerInterfaceStates indexerInterfaceState;
+	private IndexerInterfaceStates indexerInterfaceState;
 
 	@Override
 	public String getStateString() {
@@ -49,7 +49,7 @@ public enum ManagerStates implements SubsystemStates {
 		return intakeState;
 	}
 
-	protected PublicIndexerInterfaceStates getIndexerInterfaceState() {
+	protected IndexerInterfaceStates getIndexerInterfaceState() {
 		return indexerInterfaceState;
 	}
 }

@@ -4,7 +4,8 @@ import frc.robot.pioneersLib.subsystem.SubsystemStates;
 
 public enum IndexerStates implements SubsystemStates {
 	OFF("Off", IndexerConstants.OFF),
-	INDEXING("Indexing", IndexerConstants.ON),
+	AUTO_ON("Indexing", IndexerConstants.ON),
+	AUTO_OFF("Indexing", IndexerConstants.OFF),
 	SCORING("Scoring", IndexerConstants.ON);
 
 	private String stateString;

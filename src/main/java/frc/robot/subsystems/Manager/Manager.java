@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.pioneersLib.subsystem.Subsystem;
 import frc.robot.subsystems.Drive.Drive;
 import frc.robot.subsystems.Elevator.Elevator;
-import frc.robot.subsystems.Indexer.IndexerManager.PublicIndexerInterface;
+import frc.robot.subsystems.Indexer.IndexerManager.IndexerInterface;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Vision.Vision;
 import org.littletonrobotics.junction.Logger;
@@ -22,7 +22,7 @@ public class Manager extends Subsystem<ManagerStates> {
 	private final Elevator elevator = Elevator.getInstance();
 	private final CommandScheduler commandScheduler = CommandScheduler.getInstance();
 	private final Intake intake = Intake.getInstance();
-	private final PublicIndexerInterface indexerInterface = PublicIndexerInterface.getInstance();
+	private final IndexerInterface indexerInterface = IndexerInterface.getInstance();
 	// Change to change the subsystem that gets tested (has runnable sysID tests) saftey ish
 	private final Subsystem<?> sysIdSubsystem = drive;
 

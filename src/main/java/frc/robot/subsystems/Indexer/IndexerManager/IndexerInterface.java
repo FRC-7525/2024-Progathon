@@ -4,17 +4,17 @@ import frc.robot.pioneersLib.subsystem.Subsystem;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Indexer.IndexerConstants;
 
-public class PublicIndexerInterface extends Subsystem<PublicIndexerInterfaceStates> {
+public class IndexerInterface extends Subsystem<IndexerInterfaceStates> {
 
-	private static PublicIndexerInterface instance;
+	private static IndexerInterface instance;
 
-	private PublicIndexerInterface() {
-		super("Indexer Manager", PublicIndexerInterfaceStates.OFF);
+	private IndexerInterface() {
+		super("Indexer Manager", IndexerInterfaceStates.OFF);
 	}
 
-	public static PublicIndexerInterface getInstance() {
+	public static IndexerInterface getInstance() {
 		if (instance == null) {
-			instance = new PublicIndexerInterface();
+			instance = new IndexerInterface();
 		}
 		return instance;
 	}
