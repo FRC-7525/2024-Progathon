@@ -32,6 +32,5 @@ public class IndexerInterface extends Subsystem<IndexerInterfaceStates> {
 	}
 
 	@Override
-	public void runState() {
-	}
+	public void runState() {}
 }
